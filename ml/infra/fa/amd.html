@@ -90,6 +90,17 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .md { line-height: 1.7; font-size: 15px; overflow-wrap: anywhere; }
+    .md h1 { font-size: 26px; }
+    .md h2 { font-size: 20px; margin-top: 2em; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .md h3 { font-size: 17px; margin-top: 1.5em; }
+    .md pre { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; overflow-x: auto; font-size: 12px; line-height: 1.5; }
+    .md code { font-family: Menlo, Consolas, monospace; font-size: 0.9em; }
+    .md details.code { margin: 12px 0; }
+    .md details.code summary { cursor: pointer; color: var(--accent); margin-bottom: 8px; }
+    .context { margin-top: 32px; }
+    .context h2 { font-size: 22px; margin: 0 0 12px; }
+
     @media print {
       @page { margin: 12mm; }
 
@@ -100,6 +111,7 @@
       .content { background: none; border: 0; box-shadow: none; padding: 0; }
       .thumb { cursor: default; }
       .thumb img { width: 100%; border: 0; }
+      .md details.code { display: none; }
     }
   </style>
 </head>
@@ -116,6 +128,10 @@
         <img src="images/amd_tiling.png" alt="AMD MI350X TLX tiling 图">
       </button>
     </div>
+    <section class="context">
+      <h2>上下文</h2>
+      <div class="content md" id="context-md">加载中…</div>
+    </section>
   </main>
   <dialog id="viewer">
     <div class="zoombar">
@@ -129,6 +145,7 @@
       <img id="big" src="images/amd_tiling.png" alt="AMD MI350X TLX tiling 图">
     </div>
   </dialog>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     const dialog = document.getElementById('viewer');
     const scroller = document.getElementById('scroller');
@@ -175,6 +192,28 @@
       else if (e.key === '-') setScale(scale / 1.25);
       else if (e.key === '0') setScale(fitScale());
     });
+
+    const mdBox = document.getElementById('context-md');
+    fetch('amd_tiling_context.md')
+      .then((r) => {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      })
+      .then((text) => {
+        mdBox.innerHTML = marked.parse(text);
+        mdBox.querySelectorAll('pre').forEach((pre) => {
+          if (pre.textContent.split('\n').length <= 40) return;
+          const details = document.createElement('details');
+          details.className = 'code';
+          const summary = document.createElement('summary');
+          summary.textContent = '展开代码（' + pre.textContent.split('\n').length + ' 行）';
+          pre.replaceWith(details);
+          details.append(summary, pre);
+        });
+      })
+      .catch(() => {
+        mdBox.innerHTML = '<p>无法加载上下文文件。若是直接用 file:// 打开，请改用 <code>python3 -m http.server 8000</code> 后访问本页。</p>';
+      });
   </script>
 </body>
 </html>

@@ -1,8 +1,4 @@
-title: AMD TLX FlashAttention tiling：最终知识点、完整 SVG 与 PNG renderer
-doc_type: paste
-content: title: AMD TLX FlashAttention tiling：最终知识点、完整 SVG 与 PNG renderer
-
-content: # AMD TLX FlashAttention tiling：最终学习上下文
+# AMD TLX FlashAttention tiling：最终学习上下文
 
 ## 1. 范围与参考
 
@@ -1122,10 +1118,3 @@ print('Rendered PNG',w*2,h*2)
 </g>
 </svg>
 ```
-
-
-language: markdown
-
-creation_time: 2026-10-15T22:51:47Z
-
-update_time: 2026-10-15T22:51:47Z
