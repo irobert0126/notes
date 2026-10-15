@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; }
+    img { max-width: 100%; border: 1px solid #ddd; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Notes</h1>
+  <p>这是一个示例页面，JS 会在浏览器中渲染下面的内容。</p>
+  <ul>
+    <li><a href="ml/index.html">ml</a></li>
+  </ul>
+  <div id="output"></div>
+  <script>
+    document.getElementById('output').innerHTML = '<p>JS 渲染时间：' + new Date().toLocaleString() + '</p>';
+  </script>
+</body>
+</html>
