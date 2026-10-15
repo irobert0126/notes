@@ -4,20 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notes</title>
-  <style>
-    body { font-family: -apple-system, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; }
-    img { max-width: 100%; border: 1px solid #ddd; border-radius: 4px; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Notes</h1>
-  <p>这是一个示例页面，JS 会在浏览器中渲染下面的内容。</p>
-  <ul>
-    <li><a href="ml/index.html">ml</a></li>
-  </ul>
-  <div id="output"></div>
+  <main>
+    <nav class="crumbs">notes</nav>
+    <h1>Notes</h1>
+    <p class="lead">个人笔记索引</p>
+    <ul class="grid">
+      <li><a href="ml/index.html"><span class="name">ml</span><span class="hint">机器学习 →</span></a></li>
+    </ul>
+    <div class="content" style="margin-top: 32px;">
+      <div id="output"></div>
+    </div>
+  </main>
   <script>
-    document.getElementById('output').innerHTML = '<p>JS 渲染时间：' + new Date().toLocaleString() + '</p>';
+    document.getElementById('output').innerHTML = '<p class="hint">页面渲染于 ' + new Date().toLocaleString() + '</p>';
   </script>
 </body>
 </html>
