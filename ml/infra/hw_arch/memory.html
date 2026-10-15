@@ -5,15 +5,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ML / infra / hw_arch / memory</title>
   <link rel="stylesheet" href="../../../style.css">
+  <style>
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .toolbar button {
+      font: inherit;
+      font-size: 14px;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+
+    .thumb {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: zoom-in;
+    }
+
+    .thumb img {
+      width: 340px;
+      max-width: 100%;
+      border: 1px solid var(--border);
+    }
+
+    dialog {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      max-width: 100vw;
+      max-height: 100vh;
+    }
+
+    dialog::backdrop { background: rgba(0, 0, 0, 0.85); }
+
+    dialog img {
+      display: block;
+      max-width: 96vw;
+      max-height: 94vh;
+      width: auto;
+      height: auto;
+      margin: auto;
+      cursor: zoom-out;
+    }
+
+    @media print {
+      @page { margin: 12mm; }
+
+      body { background: #fff; color: #000; }
+      main { max-width: none; padding: 0; }
+      .crumbs, .toolbar, .lead, dialog { display: none; }
+      h1 { font-size: 22px; margin: 0 0 12px; }
+      .content { background: none; border: 0; box-shadow: none; padding: 0; }
+      .thumb { cursor: default; }
+      .thumb img { width: 100%; border: 0; }
+    }
+  </style>
 </head>
 <body>
   <main>
     <nav class="crumbs"><a href="../../../index.html">notes</a> / <a href="../../index.html">ml</a> / <a href="../index.html">infra</a> / <a href="index.html">hw_arch</a> / memory</nav>
+    <div class="toolbar">
+      <button type="button" id="print-btn">打印</button>
+    </div>
     <h1>GPU 硬件结构与访存路径</h1>
-    <p class="lead">各种访存指令从发起者到最终位置的泳道图</p>
+    <p class="lead">各种访存指令从发起者到最终位置的泳道图（点击图片放大）</p>
     <div class="content">
-      <img src="images/gpu_hardware_structure_swimlanes_zh.png" alt="GPU 硬件结构与访存路径泳道图">
+      <button type="button" class="thumb" id="open-btn" aria-label="放大查看图片">
+        <img src="images/gpu_hardware_structure_swimlanes_zh.png" alt="GPU 硬件结构与访存路径泳道图">
+      </button>
     </div>
   </main>
+  <dialog id="viewer">
+    <img src="images/gpu_hardware_structure_swimlanes_zh.png" alt="GPU 硬件结构与访存路径泳道图">
+  </dialog>
+  <script>
+    const viewer = document.getElementById('viewer');
+    document.getElementById('open-btn').addEventListener('click', () => viewer.showModal());
+    viewer.addEventListener('click', () => viewer.close());
+    document.getElementById('print-btn').addEventListener('click', () => window.print());
+  </script>
 </body>
 </html>
