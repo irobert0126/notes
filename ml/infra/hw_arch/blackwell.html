@@ -41,6 +41,12 @@
       border: 1px solid var(--border);
     }
 
+    .sec { margin-top: 32px; }
+    .sec h2 { font-size: 22px; margin: 0 0 8px; }
+    .sec .lead { margin-bottom: 12px; }
+    .ctx { margin: 12px 0 0; }
+    .ctx a { color: var(--accent); }
+
     dialog {
       inset: 0;
       width: 100vw;
@@ -95,7 +101,7 @@
 
       body { background: #fff; color: #000; }
       main { max-width: none; padding: 0; }
-      .crumbs, .toolbar, .lead, dialog { display: none; }
+      .crumbs, .toolbar, .lead, .ctx, dialog { display: none; }
       h1 { font-size: 22px; margin: 0 0 12px; }
       .content { background: none; border: 0; box-shadow: none; padding: 0; }
       .thumb { cursor: default; }
@@ -116,10 +122,19 @@
       <li>tcgen05.mma：TensorCore 5th Generation MMA，第五代 Tensor Core 的矩阵乘加指令（Blackwell）</li>
     </ul>
     <div class="content">
-      <button type="button" class="thumb" id="open-btn" aria-label="放大查看图片">
+      <button type="button" class="thumb" data-src="images/blackwell.png" data-alt="Blackwell tcgen05 数据流图" aria-label="放大查看图片">
         <img src="images/blackwell.png" alt="Blackwell tcgen05 数据流图">
       </button>
     </div>
+    <section class="sec">
+      <h2>mbarrier</h2>
+      <div class="content">
+        <button type="button" class="thumb" data-src="images/mbarrier.png" data-alt="mbarrier 融合图" aria-label="放大查看图片">
+          <img src="images/mbarrier.png" alt="mbarrier 融合图">
+        </button>
+      </div>
+      <p class="ctx"><a href="mbarrier_context.md">上下文（Markdown）→</a></p>
+    </section>
   </main>
   <dialog id="viewer">
     <div class="zoombar">
@@ -130,7 +145,7 @@
       <button type="button" id="close-btn">关闭</button>
     </div>
     <div class="viewer" id="scroller">
-      <img id="big" src="images/blackwell.png" alt="Blackwell tcgen05 数据流图">
+      <img id="big" alt="">
     </div>
   </dialog>
   <script>
@@ -156,12 +171,16 @@
       render();
     }
 
-    function openViewer() {
+    function openViewer(src, alt) {
       dialog.showModal();
-      setScale(fitScale());
+      big.alt = alt;
+      big.onload = () => setScale(fitScale());
+      big.src = src;
     }
 
-    document.getElementById('open-btn').addEventListener('click', openViewer);
+    document.querySelectorAll('.thumb').forEach((btn) => {
+      btn.addEventListener('click', () => openViewer(btn.dataset.src, btn.dataset.alt));
+    });
     document.getElementById('close-btn').addEventListener('click', () => dialog.close());
     document.getElementById('zoom-in-btn').addEventListener('click', () => setScale(scale * 1.25));
     document.getElementById('zoom-out-btn').addEventListener('click', () => setScale(scale / 1.25));
