@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ML / infra / fa / Hopper FA2 tiling</title>
-  <link rel="stylesheet" href="../../../style.css">
+  <title>ML / infra / fa / FA2-FA3-FA4 pipeline</title>
+  <link rel="stylesheet" href="../../../../style.css">
   <style>
     .toolbar {
       display: flex;
@@ -108,18 +108,18 @@
 </head>
 <body>
   <main>
-    <nav class="crumbs"><a href="../../../index.html">notes</a> / <a href="../../index.html">ml</a> / <a href="../index.html">infra</a> / <a href="index.html">fa</a> / Hopper FA2 tiling</nav>
+    <nav class="crumbs"><a href="../../../../index.html">notes</a> / <a href="../../../index.html">ml</a> / <a href="../../index.html">infra</a> / <a href="../index.html">kernel</a> / <a href="index.html">fa</a> / pipeline</nav>
     <div class="toolbar">
       <button type="button" id="print-btn">打印</button>
     </div>
-    <h1>Hopper FA2 tiling</h1>
-    <p class="lead">Hopper FA2 tiling：最终知识点与分块示意（点击图片放大）</p>
+    <h1>FA2 → FA3 → FA4：pipeline 改进了哪里的 blocker？</h1>
+    <p class="lead">同一工作量、同一宽度下，三代 FA pipeline 的阻塞点对比（点击图片放大）</p>
     <div class="content">
       <button type="button" class="thumb" id="open-btn" aria-label="放大查看图片">
-        <img src="images/hopper_fa2_tiling.png" alt="Hopper FA2 tiling 图">
+        <img src="images/fa2_fa3_fa4_pipeline_equal_op_work.png" alt="FA2 FA3 FA4 pipeline 同工作量对比图">
       </button>
     </div>
-    <p class="ctx"><a href="hopper_fa2_tiling_context.md">上下文（Markdown）→</a></p>
+    <p class="ctx"><a href="pipeline_context.md">上下文（Markdown）→</a></p>
   </main>
   <dialog id="viewer">
     <div class="zoombar">
@@ -130,7 +130,7 @@
       <button type="button" id="close-btn">关闭</button>
     </div>
     <div class="viewer" id="scroller">
-      <img id="big" src="images/hopper_fa2_tiling.png" alt="Hopper FA2 tiling 图">
+      <img id="big" src="images/fa2_fa3_fa4_pipeline_equal_op_work.png" alt="FA2 FA3 FA4 pipeline 同工作量对比图">
     </div>
   </dialog>
   <script>
