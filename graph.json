@@ -6,6 +6,11 @@
    "label": "GPU 硬件与访存"
   },
   {
+   "id": "topic:gpu-memory",
+   "type": "topic",
+   "label": "GPU 显存管理"
+  },
+  {
    "id": "topic:pipeline-parallel",
    "type": "topic",
    "label": "Pipeline parallel"
@@ -40,6 +45,37 @@
    "id": "tag:FA4",
    "type": "concept",
    "label": "FA4"
+  },
+  {
+   "id": "topics/gpu-memory/vmm-expandable-segments.md",
+   "type": "note",
+   "label": "VMM 与 expandable_segments",
+   "topic": "gpu-memory"
+  },
+  {
+   "id": "tag:VMM",
+   "type": "concept",
+   "label": "VMM"
+  },
+  {
+   "id": "tag:expandable_segments",
+   "type": "concept",
+   "label": "expandable_segments"
+  },
+  {
+   "id": "tag:cuMemMap",
+   "type": "concept",
+   "label": "cuMemMap"
+  },
+  {
+   "id": "tag:chunk",
+   "type": "concept",
+   "label": "chunk"
+  },
+  {
+   "id": "tag:PyTorch allocator",
+   "type": "concept",
+   "label": "PyTorch allocator"
   },
   {
    "id": "topics/pipeline-parallel/zero-bubble-backward-split.md",
@@ -107,6 +143,42 @@
   {
    "source": "topics/gpu-architecture/mbarrier.md",
    "target": "tag:FA4",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topic:gpu-memory",
+   "target": "topics/gpu-memory/vmm-expandable-segments.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:VMM",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:expandable_segments",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:cuMemMap",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:chunk",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:PyTorch allocator",
    "kind": "tag",
    "label": ""
   },

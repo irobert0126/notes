@@ -22,6 +22,31 @@
    ]
   },
   {
+   "name": "gpu-memory",
+   "title": "GPU 显存管理",
+   "notes": [
+    {
+     "path": "topics/gpu-memory/vmm-expandable-segments.md",
+     "title": "VMM 与 expandable_segments",
+     "tags": [
+      "VMM",
+      "expandable_segments",
+      "cuMemMap",
+      "chunk",
+      "PyTorch allocator"
+     ],
+     "related": [],
+     "sources": [
+      "sources/vmm-expandable-segments-v5.md",
+      "sources/vmm-expandable-segments-v4.md",
+      "sources/vmm-expandable-segments-v3.md",
+      "sources/vmm-expandable-segments-v2.md",
+      "sources/vmm-expandable-segments-v1.md"
+     ]
+    }
+   ]
+  },
+  {
    "name": "pipeline-parallel",
    "title": "Pipeline parallel",
    "notes": [
