@@ -221,7 +221,9 @@
       "sources/vmm-expandable-segments-v3.md",
       "sources/vmm-expandable-segments-v2.md",
       "sources/vmm-expandable-segments-v1.md",
-      "sources/vms-fragment-repair.md"
+      "sources/vms-fragment-repair.md",
+      "sources/vma-compare-vms-page-recycle.md",
+      "sources/vma-compare-vms-doc-superseded.md"
      ]
     }
    ]

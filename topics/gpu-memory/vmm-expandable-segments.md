@@ -3,7 +3,7 @@ title: VMM 与 expandable_segments
 topic: gpu-memory
 tags: [VMM, VMS, expandable_segments, cuMemMap, chunk, fragment, PyTorch allocator, GMLake]
 related: []
-sources: [sources/vmm-expandable-segments-v5.md, sources/vmm-expandable-segments-v4.md, sources/vmm-expandable-segments-v3.md, sources/vmm-expandable-segments-v2.md, sources/vmm-expandable-segments-v1.md, sources/vms-fragment-repair.md]
+sources: [sources/vmm-expandable-segments-v5.md, sources/vmm-expandable-segments-v4.md, sources/vmm-expandable-segments-v3.md, sources/vmm-expandable-segments-v2.md, sources/vmm-expandable-segments-v1.md, sources/vms-fragment-repair.md, sources/vma-compare-vms-page-recycle.md, sources/vma-compare-vms-doc-superseded.md]
 ---
 
 # VMM 与 expandable_segments
@@ -39,8 +39,22 @@ fragment 的根源是"连续 VA 的要求"和"物理 chunk 不连续"之间的�
 
 ![VMS 修复 fragment 的四步示意](../../images/vms-fragment-repair.png)
 
+## VMS 与页回收：同一个例子的对比
+
+### 一句话目的
+
+用同一个例子（6 个 chunk，请求 4 块）比较 VMS 拼接和页回收两种减小 fragment 的方式。
+
+### 核心知识点（草稿，待确认）
+
+两种方法的根本区别在**回收的动作**。VMS 的回收是 GC：不在释放 tensor 时做，而是等触发条件（VA 分配失败、autoGC 超限、分配失败后的重试、emptyCache）之一满足，并且 cudaEvent 完成之后，才删掉旧 VA 的反向引用，再 cuMemUnmap；PhyBlock 保留，reserved 不降。页回收的回收是搬页：miss 时同步 unmap 空洞里的 idle 页，再 map 到段尾；每个页任何时刻只有一段 VA；回收发生在分配路径上，reserved 也不降。要分清这两种回收，需要熟悉 GC 的每一步和每个触发点，因为 VMS 的旧映射什么时候消失，完全由 GC 决定。
+
+![VMS 与页回收对比（同一例子）](../../images/vma-vms-vs-page-recycle.png)
+
 ## 来源
 
 - [VMM 与 expandable_segments：v5（当前版本）](../../sources/vmm-expandable-segments-v5.md)
 - 历史版本：[v4](../../sources/vmm-expandable-segments-v4.md)、[v3](../../sources/vmm-expandable-segments-v3.md)、[v2](../../sources/vmm-expandable-segments-v2.md)、[v1](../../sources/vmm-expandable-segments-v1.md)
 - [VMS 修复 fragment：2×2 示意图（完整 SVG）](../../sources/vms-fragment-repair.md)
+- [VMS 与页回收对比（完整 SVG）](../../sources/vma-compare-vms-page-recycle.md)
+- 被取代的旧版本（VMS 与 doc 搬页对比）：[vma-compare-vms-doc-superseded](../../sources/vma-compare-vms-doc-superseded.md)
