@@ -1,5 +1,7 @@
 # PP 里 backward 怎么拆成 dI / dW：eager 不拆、eager 拆、compile 没有 fix、compile 有 fix
 
+嵌套 paste P2548053087（已提取）：[backward_split_measurements.md](backward_split_measurements.md)
+
 这张图解释 pipeline parallel（zero-bubble 调度）里怎么把一个 microbatch 的 backward 拆成 dI / dW（I / W），以及为什么旧实现只能在 eager 下工作、SplitBackwardBackend 怎么修好它。
 
 新 session 只需读本 paste。

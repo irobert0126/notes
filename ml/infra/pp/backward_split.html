@@ -60,13 +60,14 @@
   <main>
     <nav class="crumbs"><a href="../../../index.html">notes</a> / <a href="../../index.html">ml</a> / <a href="../index.html">infra</a> / <a href="index.html">pp</a> / backward 拆分</nav>
     <div class="toolbar">
+      <button type="button" id="lang-btn">English</button>
       <button type="button" id="print-btn">打印</button>
     </div>
     <h1>PP backward 拆分 dI / dW：四种情况</h1>
     <p class="lead">点击图片放大</p>
     <div class="content">
       <button type="button" class="thumb" id="open-btn" aria-label="放大查看图片">
-        <img src="images/backward_four_cases.png" alt="PP backward 拆分四种情况对比图">
+        <img id="thumb-img" src="images/backward_four_cases_zh.png" alt="PP backward 拆分四种情况对比图（中文）">
       </button>
     </div>
     <p class="ctx"><a href="backward_split_context.md">上下文（Markdown）→</a></p>
@@ -90,7 +91,7 @@
       <button type="button" id="close-btn">关闭</button>
     </div>
     <div class="viewer" id="scroller">
-      <img id="big" src="images/backward_four_cases.png" alt="PP backward 拆分四种情况对比图">
+      <img id="big" src="images/backward_four_cases_zh.png" alt="PP backward 拆分四种情况对比图">
     </div>
   </dialog>
   <script>
@@ -127,6 +128,23 @@
     document.getElementById('zoom-out-btn').addEventListener('click', () => setScale(scale / 1.25));
     document.getElementById('zoom-fit-btn').addEventListener('click', () => setScale(fitScale()));
     document.getElementById('print-btn').addEventListener('click', () => window.print());
+
+    const IMAGES = {
+      zh: { src: 'images/backward_four_cases_zh.png', alt: 'PP backward 拆分四种情况对比图（中文）', next: 'English' },
+      en: { src: 'images/backward_four_cases_en.png', alt: 'PP backward split four cases (English)', next: '中文' },
+    };
+    let lang = 'zh';
+    const thumbImg = document.getElementById('thumb-img');
+    const langBtn = document.getElementById('lang-btn');
+    function setLang(next) {
+      lang = next;
+      thumbImg.src = IMAGES[lang].src;
+      thumbImg.alt = IMAGES[lang].alt;
+      big.src = IMAGES[lang].src;
+      big.alt = IMAGES[lang].alt;
+      langBtn.textContent = IMAGES[lang].next;
+    }
+    langBtn.addEventListener('click', () => setLang(lang === 'zh' ? 'en' : 'zh'));
 
     scroller.addEventListener('wheel', (e) => {
       if (!e.ctrlKey && !e.metaKey) return;
