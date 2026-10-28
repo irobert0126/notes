@@ -1,0 +1,134 @@
+{
+ "type": "dir",
+ "path": "",
+ "title": "notes",
+ "children": [
+  {
+   "type": "dir",
+   "path": "checkpoints",
+   "title": "checkpoints",
+   "children": [
+    {
+     "type": "md",
+     "path": "checkpoints/2026-10-15-example.md",
+     "title": "2026-10-15-example.md"
+    }
+   ]
+  },
+  {
+   "type": "dir",
+   "path": "ml",
+   "title": "ml",
+   "children": [
+    {
+     "type": "dir",
+     "path": "ml/infra",
+     "title": "infra",
+     "children": [
+      {
+       "type": "dir",
+       "path": "ml/infra/hw_arch",
+       "title": "hw_arch",
+       "children": [
+        {
+         "type": "page",
+         "path": "ml/infra/hw_arch/amd.html",
+         "title": "AMD"
+        },
+        {
+         "type": "page",
+         "path": "ml/infra/hw_arch/arch.html",
+         "title": "AMD CDNA / Hopper / Blackwell 片上存储访问对照"
+        },
+        {
+         "type": "page",
+         "path": "ml/infra/hw_arch/memory.html",
+         "title": "GPU 硬件结构与访存路径"
+        },
+        {
+         "type": "md",
+         "path": "ml/infra/hw_arch/arch_context.md",
+         "title": "arch_context.md"
+        },
+        {
+         "type": "md",
+         "path": "ml/infra/hw_arch/mbarrier_context.md",
+         "title": "mbarrier_context.md"
+        },
+        {
+         "type": "page",
+         "path": "ml/infra/hw_arch/blackwell.html",
+         "title": "tcgen05 stream ops"
+        }
+       ]
+      },
+      {
+       "type": "dir",
+       "path": "ml/infra/kernel",
+       "title": "kernel",
+       "children": [
+        {
+         "type": "dir",
+         "path": "ml/infra/kernel/fa",
+         "title": "fa",
+         "children": [
+          {
+           "type": "page",
+           "path": "ml/infra/kernel/fa/amd.html",
+           "title": "AMD MI350X TLX Tiling：B / L / H / D 落在 kernel 的哪一层"
+          },
+          {
+           "type": "page",
+           "path": "ml/infra/kernel/fa/blackwell_fa4.html",
+           "title": "Blackwell FA4 tiling"
+          },
+          {
+           "type": "page",
+           "path": "ml/infra/kernel/fa/pipeline.html",
+           "title": "FA2 → FA3 → FA4：pipeline 改进了哪里的 blocker？"
+          },
+          {
+           "type": "page",
+           "path": "ml/infra/kernel/fa/hopper_fa2.html",
+           "title": "Hopper FA2 tiling"
+          },
+          {
+           "type": "page",
+           "path": "ml/infra/kernel/fa/hopper_fa3.html",
+           "title": "Hopper FA3 tiling"
+          },
+          {
+           "type": "md",
+           "path": "ml/infra/kernel/fa/amd_tiling_context.md",
+           "title": "amd_tiling_context.md"
+          },
+          {
+           "type": "md",
+           "path": "ml/infra/kernel/fa/blackwell_fa4_tiling_context.md",
+           "title": "blackwell_fa4_tiling_context.md"
+          },
+          {
+           "type": "md",
+           "path": "ml/infra/kernel/fa/hopper_fa2_tiling_context.md",
+           "title": "hopper_fa2_tiling_context.md"
+          },
+          {
+           "type": "md",
+           "path": "ml/infra/kernel/fa/hopper_fa3_tiling_context.md",
+           "title": "hopper_fa3_tiling_context.md"
+          },
+          {
+           "type": "md",
+           "path": "ml/infra/kernel/fa/pipeline_context.md",
+           "title": "pipeline_context.md"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
