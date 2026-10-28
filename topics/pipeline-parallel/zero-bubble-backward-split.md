@@ -20,7 +20,7 @@ compile 模式下，按 op 划分的多个 autograd 节点（fc1、fc2 的 `MmBa
 
 解法是让拆出来的 dI 图把 dh 作为输出交出来，存进节点的 ctx，由 ctx 把 dh 传给 W。
 
-![四种情况对比图（中文）](../../images/backward_four_cases_zh.png)
+![四种情况对比图（左：中文，右：English）](../../images/zero-bubble-backward-split-bilingual.png)
 
 ## 来源
 

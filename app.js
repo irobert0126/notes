@@ -127,6 +127,47 @@
     });
   }
 
+  const BI_GAP = 48;
+
+  function setBilingualMode(view, img, mode) {
+    view.querySelectorAll('.bi-knob button').forEach((b) => b.classList.toggle('on', b.dataset.mode === mode));
+    img.style.width = mode === 'both' ? '100%' : '200%';
+    if (mode === 'en') {
+      const s = view.clientWidth / img.naturalWidth * 2;
+      img.style.transform = `translateX(${-(img.naturalWidth + BI_GAP) / 2 * s}px)`;
+    } else {
+      img.style.transform = 'none';
+    }
+    view.dataset.mode = mode;
+  }
+
+  function bilingualize() {
+    bodyEl.querySelectorAll('img').forEach((img) => {
+      if (!/-bilingual\.png$/.test(img.getAttribute('src') || '')) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'bi';
+      const knob = document.createElement('div');
+      knob.className = 'bi-knob';
+      [['zh', '中文'], ['both', '双语'], ['en', 'English']].forEach(([mode, label]) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.dataset.mode = mode;
+        b.textContent = label;
+        b.addEventListener('click', () => setBilingualMode(view, img, mode));
+        knob.appendChild(b);
+      });
+      const view = document.createElement('div');
+      view.className = 'bi-view';
+      img.replaceWith(wrap);
+      view.appendChild(img);
+      wrap.append(knob, view);
+      const apply = () => setBilingualMode(view, img, 'zh');
+      if (img.complete && img.naturalWidth) apply();
+      else img.addEventListener('load', apply);
+      window.addEventListener('resize', () => setBilingualMode(view, img, view.dataset.mode || 'zh'));
+    });
+  }
+
   function renderFooter(note) {
     footEl.replaceChildren();
     const sections = [
@@ -177,6 +218,7 @@
     bodyEl.innerHTML = window.marked ? marked.parse(body) : '';
     if (!window.marked) bodyEl.textContent = body;
     rewriteBody(path);
+    bilingualize();
     renderFooter(note);
     noteEl.scrollTop = 0;
   }

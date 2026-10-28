@@ -26,6 +26,8 @@ sources: [sources/memory-access-paths-context.md]
 - 真实负载只在 torchrec `--world_size 1` 下跑过；fsdp-adam 没跑过 exact 模式。
 - 图中的地址（如 0x00007f3a40001414）是示意值，不是真实 trace。
 
+![访存六类路径（左：中文，右：English）](../../images/memory-access-six-categories-bilingual.png)
+
 ![GPU 硬件结构与寻址路径（中文）](../../images/memory-access-swimlanes-zh.png)
 
 ## 来源
