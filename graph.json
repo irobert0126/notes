@@ -1,0 +1,150 @@
+{
+ "nodes": [
+  {
+   "id": "topic:gpu-architecture",
+   "type": "topic",
+   "label": "GPU 硬件与访存"
+  },
+  {
+   "id": "topic:pipeline-parallel",
+   "type": "topic",
+   "label": "Pipeline parallel"
+  },
+  {
+   "id": "topics/gpu-architecture/mbarrier.md",
+   "type": "note",
+   "label": "mbarrier",
+   "topic": "gpu-architecture"
+  },
+  {
+   "id": "tag:mbarrier",
+   "type": "concept",
+   "label": "mbarrier（异步同步）"
+  },
+  {
+   "id": "tag:Blackwell",
+   "type": "concept",
+   "label": "Blackwell"
+  },
+  {
+   "id": "tag:异步同步",
+   "type": "concept",
+   "label": "异步同步"
+  },
+  {
+   "id": "tag:warp-specialization",
+   "type": "concept",
+   "label": "warp-specialization"
+  },
+  {
+   "id": "tag:FA4",
+   "type": "concept",
+   "label": "FA4"
+  },
+  {
+   "id": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "type": "note",
+   "label": "Zero-bubble 的 backward 拆分（dI / dW）",
+   "topic": "pipeline-parallel"
+  },
+  {
+   "id": "tag:pipeline-parallel",
+   "type": "concept",
+   "label": "pipeline-parallel"
+  },
+  {
+   "id": "tag:zero-bubble",
+   "type": "concept",
+   "label": "zero-bubble"
+  },
+  {
+   "id": "tag:autograd",
+   "type": "concept",
+   "label": "autograd"
+  },
+  {
+   "id": "tag:dI-dW",
+   "type": "concept",
+   "label": "dI-dW"
+  },
+  {
+   "id": "tag:torch.compile",
+   "type": "concept",
+   "label": "torch.compile"
+  }
+ ],
+ "edges": [
+  {
+   "source": "topic:gpu-architecture",
+   "target": "topics/gpu-architecture/mbarrier.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/mbarrier.md",
+   "target": "tag:mbarrier",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/mbarrier.md",
+   "target": "tag:Blackwell",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/mbarrier.md",
+   "target": "tag:异步同步",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/mbarrier.md",
+   "target": "tag:warp-specialization",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/mbarrier.md",
+   "target": "tag:FA4",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topic:pipeline-parallel",
+   "target": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "target": "tag:pipeline-parallel",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "target": "tag:zero-bubble",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "target": "tag:autograd",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "target": "tag:dI-dW",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "target": "tag:torch.compile",
+   "kind": "tag",
+   "label": ""
+  }
+ ]
+}

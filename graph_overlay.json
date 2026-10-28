@@ -1,0 +1,13 @@
+{
+  "_help": "手动维护的图谱补充信息。修改后运行 python3 tools/build_site.py 即可，不需要改动笔记文件。",
+  "topic_titles": {
+    "gpu-architecture": "GPU 硬件与访存",
+    "pipeline-parallel": "Pipeline parallel"
+  },
+  "concept_labels": {
+    "mbarrier": "mbarrier（异步同步）"
+  },
+  "add_tags": {},
+  "hide_tags": [],
+  "extra_edges": []
+}
