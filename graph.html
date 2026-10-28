@@ -8,40 +8,64 @@
   <style>
     html, body { height: 100%; margin: 0; }
     body { display: flex; flex-direction: column; background: var(--bg); color: var(--text); }
-    header { display: flex; align-items: center; gap: 14px; padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--card); flex-wrap: wrap; }
-    header h1 { font-size: 18px; margin: 0; }
-    header a { color: var(--accent); text-decoration: none; font-size: 14px; }
-    .legend { display: flex; gap: 12px; font-size: 13px; color: var(--muted); align-items: center; }
-    .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
-    header button { font: inherit; font-size: 13px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); cursor: pointer; margin-left: auto; }
+    header { display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-bottom: 1px solid var(--border); background: var(--card); flex-wrap: wrap; font-size: 13px; }
+    header h1 { font-size: 16px; margin: 0; }
+    header a { color: var(--accent); text-decoration: none; }
+    .group { display: flex; align-items: center; gap: 8px; padding-left: 12px; border-left: 1px solid var(--border); }
+    .group:first-of-type { border-left: 0; padding-left: 0; }
+    label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text); }
+    select, input[type=search] { font: inherit; font-size: 13px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); }
+    input[type=search] { width: 180px; }
+    header button { font: inherit; font-size: 13px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); cursor: pointer; }
+    header button:hover { border-color: var(--accent); }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; }
+    #count { color: var(--muted); margin-left: auto; }
     #stage { flex: 1; position: relative; min-height: 0; }
     svg { width: 100%; height: 100%; display: block; cursor: grab; user-select: none; }
     svg.panning { cursor: grabbing; }
-    .edge { stroke: var(--muted); stroke-opacity: 0.35; }
-    .edge.contains { stroke-dasharray: 4 3; }
+    .edge { stroke: var(--muted); stroke-opacity: 0.3; transition: stroke-opacity 0.15s; }
+    .edge.contains { stroke-dasharray: 3 4; }
     .edge.custom { stroke: #d97706; stroke-opacity: 0.7; }
-    .node { cursor: pointer; stroke: var(--card); stroke-width: 1.5; }
-    .label { font-size: 12px; fill: var(--text); pointer-events: none; }
+    .node { cursor: pointer; stroke: var(--card); stroke-width: 1.5; transition: opacity 0.15s; }
+    .node.match { stroke: #111; stroke-width: 2.5; }
+    .label { font-size: 11px; fill: var(--text); pointer-events: none; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; }
     .label.topic { font-size: 14px; font-weight: 700; }
-    .dim { opacity: 0.12; }
-    #info { position: absolute; top: 12px; right: 12px; width: 280px; max-height: calc(100% - 24px); overflow-y: auto; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 13px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
-    #info h2 { font-size: 15px; margin: 0 0 6px; }
+    .label.concept { fill: #92400e; }
+    .dim { opacity: 0.1; }
+    .edge.dim { stroke-opacity: 0.04; }
+    #info { position: absolute; top: 12px; right: 12px; width: 300px; max-height: calc(100% - 24px); overflow-y: auto; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 13px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    #info h2 { font-size: 15px; margin: 0 0 4px; }
     #info .kind { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
-    #info ul { margin: 6px 0 0; padding-left: 18px; }
+    #info h3 { font-size: 12px; color: var(--muted); margin: 12px 0 4px; font-weight: 600; }
+    #info ul { margin: 0; padding-left: 18px; }
     #info a { color: var(--accent); }
-    #hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); }
+    #hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); background: var(--card); padding: 4px 8px; border-radius: 6px; }
   </style>
 </head>
 <body>
   <header>
     <h1>知识图谱</h1>
     <a href="index.html">← 返回笔记</a>
-    <div class="legend">
-      <span><span class="dot" style="background:#2563eb"></span>主题</span>
-      <span><span class="dot" style="background:#16a34a"></span>笔记</span>
-      <span><span class="dot" style="background:#d97706"></span>概念</span>
+    <div class="group">
+      <label><input type="checkbox" id="show-topic" checked><span class="dot" style="background:#2563eb"></span>主题</label>
+      <label><input type="checkbox" id="show-note" checked><span class="dot" style="background:#16a34a"></span>笔记</label>
+      <label><input type="checkbox" id="show-concept" checked><span class="dot" style="background:#d97706"></span>概念</label>
     </div>
-    <button type="button" id="reset">重新布局</button>
+    <div class="group">
+      <label><input type="checkbox" id="shared-only" checked>只显示被多篇笔记共享的概念</label>
+    </div>
+    <div class="group">
+      <span>主题</span>
+      <select id="topic-sel"><option value="">全部</option></select>
+    </div>
+    <div class="group">
+      <input type="search" id="query" placeholder="搜索节点">
+    </div>
+    <div class="group">
+      <button type="button" id="fit">适应视图</button>
+      <button type="button" id="relayout">重新布局</button>
+    </div>
+    <span id="count"></span>
   </header>
   <div id="stage">
     <svg id="canvas" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet">
@@ -52,7 +76,7 @@
       </g>
     </svg>
     <div id="info" hidden></div>
-    <div id="hint">拖动节点；拖动空白处平移；滚轮缩放；点击笔记节点打开。</div>
+    <div id="hint">点击节点查看它的关联；点击空白处取消；拖动节点或空白处；滚轮缩放。</div>
   </div>
   <script src="graph.js"></script>
 </body>
