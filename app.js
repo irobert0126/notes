@@ -232,7 +232,7 @@
       route();
       return;
     }
-    const load = searchIndex || (searchIndex = fetch(new URL('site-search.json', BASE)).then((r) => r.json()));
+    const load = searchIndex || (searchIndex = fetch(new URL('search.json', BASE)).then((r) => r.json()));
     load.then((docs) => {
       if (searchEl.value.trim() !== query) return;
       const hits = [];
@@ -288,7 +288,7 @@
 
   window.addEventListener('hashchange', route);
 
-  fetch(new URL('site-nav.json', BASE))
+  fetch(new URL('nav.json', BASE))
     .then((r) => r.json())
     .then((data) => {
       nav = data;

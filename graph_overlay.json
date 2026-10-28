@@ -3,10 +3,13 @@
   "topic_titles": {
     "gpu-architecture": "GPU 硬件与访存",
     "pipeline-parallel": "Pipeline parallel",
-    "gpu-memory": "GPU 显存管理"
+    "gpu-memory": "GPU 显存管理",
+    "attention-kernels": "Attention kernels（FlashAttention）"
   },
   "concept_labels": {
-    "mbarrier": "mbarrier（异步同步）"
+    "mbarrier": "mbarrier（异步同步）",
+    "FA4": "FA4（Blackwell）",
+    "tcgen05": "tcgen05"
   },
   "add_tags": {},
   "hide_tags": [],

@@ -205,7 +205,7 @@
         const li = document.createElement('li');
         if (o.type === 'note') {
           const a = document.createElement('a');
-          a.href = 'app.html#/' + o.id;
+          a.href = 'index.html#/' + o.id;
           a.textContent = o.label;
           li.appendChild(a);
         } else {
@@ -217,7 +217,7 @@
     }
     if (node.type === 'note') {
       const a = document.createElement('p');
-      a.innerHTML = `<a href="app.html#/${node.id}">打开笔记 →</a>`;
+      a.innerHTML = `<a href="index.html#/${node.id}">打开笔记 →</a>`;
       info.appendChild(a);
     }
   }
@@ -268,7 +268,7 @@
       if (!moved) {
         showInfo(node);
         if (node.type === 'note') {
-          window.location.href = 'app.html#/' + node.id;
+          window.location.href = 'index.html#/' + node.id;
         }
       }
       drag = null;

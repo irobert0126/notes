@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build site-nav.json, site-search.json and graph.json from topics/ notes plus graph_overlay.json."""
+"""Build nav.json, search.json and graph.json from topics/ notes plus graph_overlay.json."""
 import json
 import re
 import sys
@@ -170,8 +170,8 @@ def main():
         print("\n".join(errors), file=sys.stderr)
         sys.exit(1)
 
-    (ROOT / "site-nav.json").write_text(json.dumps(nav, ensure_ascii=False, indent=1), encoding="utf-8")
-    (ROOT / "site-search.json").write_text(json.dumps(search, ensure_ascii=False), encoding="utf-8")
+    (ROOT / "nav.json").write_text(json.dumps(nav, ensure_ascii=False, indent=1), encoding="utf-8")
+    (ROOT / "search.json").write_text(json.dumps(search, ensure_ascii=False), encoding="utf-8")
     (ROOT / "graph.json").write_text(json.dumps(graph, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"notes={len(notes)} checkpoints={len(checkpoints)} nodes={len(graph['nodes'])} edges={len(graph['edges'])}")
 

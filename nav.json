@@ -1,99 +1,273 @@
 {
- "type": "dir",
- "path": "",
- "title": "notes",
- "children": [
+ "topics": [
   {
-   "type": "dir",
-   "path": "ml",
-   "title": "ml",
-   "children": [
+   "name": "attention-kernels",
+   "title": "Attention kernels（FlashAttention）",
+   "notes": [
     {
-     "type": "dir",
-     "path": "ml/infra",
-     "title": "infra",
-     "children": [
-      {
-       "type": "dir",
-       "path": "ml/infra/hw_arch",
-       "title": "hw_arch",
-       "children": [
-        {
-         "type": "page",
-         "path": "ml/infra/hw_arch/amd.html",
-         "title": "AMD"
-        },
-        {
-         "type": "page",
-         "path": "ml/infra/hw_arch/arch.html",
-         "title": "AMD CDNA / Hopper / Blackwell 片上存储访问对照"
-        },
-        {
-         "type": "page",
-         "path": "ml/infra/hw_arch/memory.html",
-         "title": "GPU 硬件结构与访存路径"
-        },
-        {
-         "type": "page",
-         "path": "ml/infra/hw_arch/blackwell.html",
-         "title": "tcgen05 stream ops"
-        }
-       ]
-      },
-      {
-       "type": "dir",
-       "path": "ml/infra/kernel",
-       "title": "kernel",
-       "children": [
-        {
-         "type": "dir",
-         "path": "ml/infra/kernel/fa",
-         "title": "fa",
-         "children": [
-          {
-           "type": "page",
-           "path": "ml/infra/kernel/fa/amd.html",
-           "title": "AMD MI350X TLX Tiling：B / L / H / D 落在 kernel 的哪一层"
-          },
-          {
-           "type": "page",
-           "path": "ml/infra/kernel/fa/blackwell_fa4.html",
-           "title": "Blackwell FA4 tiling"
-          },
-          {
-           "type": "page",
-           "path": "ml/infra/kernel/fa/pipeline.html",
-           "title": "FA2 → FA3 → FA4：pipeline 改进了哪里的 blocker？"
-          },
-          {
-           "type": "page",
-           "path": "ml/infra/kernel/fa/hopper_fa2.html",
-           "title": "Hopper FA2 tiling"
-          },
-          {
-           "type": "page",
-           "path": "ml/infra/kernel/fa/hopper_fa3.html",
-           "title": "Hopper FA3 tiling"
-          }
-         ]
-        }
-       ]
-      },
-      {
-       "type": "dir",
-       "path": "ml/infra/pp",
-       "title": "pp",
-       "children": [
-        {
-         "type": "page",
-         "path": "ml/infra/pp/backward_split.html",
-         "title": "PP backward 拆分 dI / dW：四种情况"
-        }
-       ]
-      }
+     "path": "topics/attention-kernels/tiling-amd-mi350x.md",
+     "title": "AMD MI350X（gfx950）TLX FlashAttention tiling",
+     "tags": [
+      "FlashAttention",
+      "TLX",
+      "AMD",
+      "MI350X",
+      "gfx950",
+      "LDS",
+      "MFMA",
+      "wave",
+      "tiling"
+     ],
+     "related": [
+      "topics/attention-kernels/fa-pipeline-blockers.md",
+      "topics/attention-kernels/tiling-blackwell-fa4.md",
+      "topics/gpu-architecture/amd-hopper-blackwell-datapath.md"
+     ],
+     "sources": [
+      "sources/amd-tiling-mi350x-context.md"
+     ]
+    },
+    {
+     "path": "topics/attention-kernels/tiling-blackwell-fa4.md",
+     "title": "Blackwell FA4 tiling（tcgen05 与 TMEM 路径）",
+     "tags": [
+      "FlashAttention",
+      "FA4",
+      "Blackwell",
+      "tcgen05",
+      "TMEM",
+      "warp-specialization",
+      "mbarrier",
+      "tiling"
+     ],
+     "related": [
+      "topics/attention-kernels/fa-pipeline-blockers.md",
+      "topics/attention-kernels/tiling-hopper-fa3.md",
+      "topics/gpu-architecture/tcgen05-stream-ops.md",
+      "topics/gpu-architecture/mbarrier.md"
+     ],
+     "sources": [
+      "sources/blackwell-fa4-tiling-context.md"
+     ]
+    },
+    {
+     "path": "topics/attention-kernels/fa-pipeline-blockers.md",
+     "title": "FA2 / FA3 / FA4 pipeline 的 blocker",
+     "tags": [
+      "FlashAttention",
+      "pipeline",
+      "blocker",
+      "softmax",
+      "TMA",
+      "TMEM",
+      "FA2",
+      "FA3",
+      "FA4"
+     ],
+     "related": [
+      "topics/attention-kernels/tiling-hopper-fa2.md",
+      "topics/attention-kernels/tiling-hopper-fa3.md",
+      "topics/attention-kernels/tiling-blackwell-fa4.md"
+     ],
+     "sources": [
+      "sources/fa-pipeline-context.md"
+     ]
+    },
+    {
+     "path": "topics/attention-kernels/tiling-hopper-fa2.md",
+     "title": "Hopper FA2 tiling（mma.sync / cp.async 路径）",
+     "tags": [
+      "FlashAttention",
+      "FA2",
+      "Hopper",
+      "mma.sync",
+      "cp.async",
+      "SMEM",
+      "tiling"
+     ],
+     "related": [
+      "topics/attention-kernels/fa-pipeline-blockers.md",
+      "topics/attention-kernels/tiling-hopper-fa3.md"
+     ],
+     "sources": [
+      "sources/hopper-fa2-tiling-context.md"
+     ]
+    },
+    {
+     "path": "topics/attention-kernels/tiling-hopper-fa3.md",
+     "title": "Hopper FA3 tiling（warpgroup 与 WGMMA 路径）",
+     "tags": [
+      "FlashAttention",
+      "FA3",
+      "Hopper",
+      "WGMMA",
+      "warpgroup",
+      "TMA",
+      "pipeline",
+      "tiling"
+     ],
+     "related": [
+      "topics/attention-kernels/fa-pipeline-blockers.md",
+      "topics/attention-kernels/tiling-hopper-fa2.md",
+      "topics/attention-kernels/tiling-blackwell-fa4.md"
+     ],
+     "sources": [
+      "sources/hopper-fa3-tiling-context.md"
      ]
     }
    ]
+  },
+  {
+   "name": "gpu-architecture",
+   "title": "GPU 硬件与访存",
+   "notes": [
+    {
+     "path": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+     "title": "AMD / Hopper / Blackwell 片上存储访问对照",
+     "tags": [
+      "LDS",
+      "SMEM",
+      "TMEM",
+      "MFMA",
+      "wgmma",
+      "tcgen05",
+      "带宽",
+      "同步"
+     ],
+     "related": [
+      "topics/gpu-architecture/tcgen05-stream-ops.md",
+      "topics/gpu-architecture/memory-access-paths.md"
+     ],
+     "sources": [
+      "sources/arch-datapath-context.md"
+     ]
+    },
+    {
+     "path": "topics/gpu-architecture/memory-access-paths.md",
+     "title": "GPU 访存路径（六类）",
+     "tags": [
+      "访存路径",
+      "LD/ST",
+      "cp.async",
+      "TMA",
+      "CUDA graph",
+      "NVLink",
+      "Compute Sanitizer",
+      "CUPTI"
+     ],
+     "related": [
+      "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+      "topics/gpu-architecture/tcgen05-stream-ops.md"
+     ],
+     "sources": [
+      "sources/memory-access-paths-context.md"
+     ]
+    },
+    {
+     "path": "topics/gpu-architecture/mbarrier.md",
+     "title": "mbarrier",
+     "tags": [
+      "mbarrier",
+      "Blackwell",
+      "异步同步",
+      "warp-specialization",
+      "FA4"
+     ],
+     "related": [],
+     "sources": [
+      "sources/mbarrier_context.md"
+     ]
+    },
+    {
+     "path": "topics/gpu-architecture/tcgen05-stream-ops.md",
+     "title": "tcgen05 stream ops",
+     "tags": [
+      "tcgen05",
+      "TMEM",
+      "Tensor Core",
+      "Blackwell",
+      "mbarrier",
+      "SMEM"
+     ],
+     "related": [
+      "topics/gpu-architecture/mbarrier.md",
+      "topics/gpu-architecture/amd-hopper-blackwell-datapath.md"
+     ],
+     "sources": []
+    }
+   ]
+  },
+  {
+   "name": "gpu-memory",
+   "title": "GPU 显存管理",
+   "notes": [
+    {
+     "path": "topics/gpu-memory/vmm-expandable-segments.md",
+     "title": "VMM 与 expandable_segments",
+     "tags": [
+      "VMM",
+      "expandable_segments",
+      "cuMemMap",
+      "chunk",
+      "PyTorch allocator"
+     ],
+     "related": [],
+     "sources": [
+      "sources/vmm-expandable-segments-v5.md",
+      "sources/vmm-expandable-segments-v4.md",
+      "sources/vmm-expandable-segments-v3.md",
+      "sources/vmm-expandable-segments-v2.md",
+      "sources/vmm-expandable-segments-v1.md"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "pipeline-parallel",
+   "title": "Pipeline parallel",
+   "notes": [
+    {
+     "path": "topics/pipeline-parallel/autograd-engine.md",
+     "title": "Autograd 引擎：GraphTask、InputBuffer 与 prehook",
+     "tags": [
+      "autograd",
+      "GraphTask",
+      "InputBuffer",
+      "prehook",
+      "param_groups",
+      "AccumulateGrad",
+      "CompiledFunctionBackward"
+     ],
+     "related": [
+      "topics/pipeline-parallel/zero-bubble-backward-split.md"
+     ],
+     "sources": [
+      "sources/backward_split_context.md"
+     ]
+    },
+    {
+     "path": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+     "title": "Zero-bubble 的 backward 拆分（dI / dW）",
+     "tags": [
+      "pipeline-parallel",
+      "zero-bubble",
+      "autograd",
+      "dI-dW",
+      "torch.compile"
+     ],
+     "related": [],
+     "sources": [
+      "sources/backward_split_context.md",
+      "sources/backward_split_measurements.md"
+     ]
+    }
+   ]
+  }
+ ],
+ "checkpoints": [
+  {
+   "path": "checkpoints/2026-10-15-example.md",
+   "title": "2026-10-15-example"
   }
  ]
 }

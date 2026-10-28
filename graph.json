@@ -1,6 +1,11 @@
 {
  "nodes": [
   {
+   "id": "topic:attention-kernels",
+   "type": "topic",
+   "label": "Attention kernels（FlashAttention）"
+  },
+  {
    "id": "topic:gpu-architecture",
    "type": "topic",
    "label": "GPU 硬件与访存"
@@ -16,15 +21,107 @@
    "label": "Pipeline parallel"
   },
   {
-   "id": "topics/gpu-architecture/mbarrier.md",
+   "id": "topics/attention-kernels/fa-pipeline-blockers.md",
    "type": "note",
-   "label": "mbarrier",
-   "topic": "gpu-architecture"
+   "label": "FA2 / FA3 / FA4 pipeline 的 blocker",
+   "topic": "attention-kernels"
   },
   {
-   "id": "tag:mbarrier",
+   "id": "tag:FlashAttention",
    "type": "concept",
-   "label": "mbarrier（异步同步）"
+   "label": "FlashAttention"
+  },
+  {
+   "id": "tag:pipeline",
+   "type": "concept",
+   "label": "pipeline"
+  },
+  {
+   "id": "tag:blocker",
+   "type": "concept",
+   "label": "blocker"
+  },
+  {
+   "id": "tag:softmax",
+   "type": "concept",
+   "label": "softmax"
+  },
+  {
+   "id": "tag:TMA",
+   "type": "concept",
+   "label": "TMA"
+  },
+  {
+   "id": "tag:TMEM",
+   "type": "concept",
+   "label": "TMEM"
+  },
+  {
+   "id": "tag:FA2",
+   "type": "concept",
+   "label": "FA2"
+  },
+  {
+   "id": "tag:FA3",
+   "type": "concept",
+   "label": "FA3"
+  },
+  {
+   "id": "tag:FA4",
+   "type": "concept",
+   "label": "FA4（Blackwell）"
+  },
+  {
+   "id": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "type": "note",
+   "label": "AMD MI350X（gfx950）TLX FlashAttention tiling",
+   "topic": "attention-kernels"
+  },
+  {
+   "id": "tag:TLX",
+   "type": "concept",
+   "label": "TLX"
+  },
+  {
+   "id": "tag:AMD",
+   "type": "concept",
+   "label": "AMD"
+  },
+  {
+   "id": "tag:MI350X",
+   "type": "concept",
+   "label": "MI350X"
+  },
+  {
+   "id": "tag:gfx950",
+   "type": "concept",
+   "label": "gfx950"
+  },
+  {
+   "id": "tag:LDS",
+   "type": "concept",
+   "label": "LDS"
+  },
+  {
+   "id": "tag:MFMA",
+   "type": "concept",
+   "label": "MFMA"
+  },
+  {
+   "id": "tag:wave",
+   "type": "concept",
+   "label": "wave"
+  },
+  {
+   "id": "tag:tiling",
+   "type": "concept",
+   "label": "tiling"
+  },
+  {
+   "id": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "type": "note",
+   "label": "Blackwell FA4 tiling（tcgen05 与 TMEM 路径）",
+   "topic": "attention-kernels"
   },
   {
    "id": "tag:Blackwell",
@@ -32,9 +129,9 @@
    "label": "Blackwell"
   },
   {
-   "id": "tag:异步同步",
+   "id": "tag:tcgen05",
    "type": "concept",
-   "label": "异步同步"
+   "label": "tcgen05"
   },
   {
    "id": "tag:warp-specialization",
@@ -42,9 +139,130 @@
    "label": "warp-specialization"
   },
   {
-   "id": "tag:FA4",
+   "id": "tag:mbarrier",
    "type": "concept",
-   "label": "FA4"
+   "label": "mbarrier（异步同步）"
+  },
+  {
+   "id": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "type": "note",
+   "label": "Hopper FA2 tiling（mma.sync / cp.async 路径）",
+   "topic": "attention-kernels"
+  },
+  {
+   "id": "tag:Hopper",
+   "type": "concept",
+   "label": "Hopper"
+  },
+  {
+   "id": "tag:mma.sync",
+   "type": "concept",
+   "label": "mma.sync"
+  },
+  {
+   "id": "tag:cp.async",
+   "type": "concept",
+   "label": "cp.async"
+  },
+  {
+   "id": "tag:SMEM",
+   "type": "concept",
+   "label": "SMEM"
+  },
+  {
+   "id": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "type": "note",
+   "label": "Hopper FA3 tiling（warpgroup 与 WGMMA 路径）",
+   "topic": "attention-kernels"
+  },
+  {
+   "id": "tag:WGMMA",
+   "type": "concept",
+   "label": "WGMMA"
+  },
+  {
+   "id": "tag:warpgroup",
+   "type": "concept",
+   "label": "warpgroup"
+  },
+  {
+   "id": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "type": "note",
+   "label": "AMD / Hopper / Blackwell 片上存储访问对照",
+   "topic": "gpu-architecture"
+  },
+  {
+   "id": "tag:wgmma",
+   "type": "concept",
+   "label": "wgmma"
+  },
+  {
+   "id": "tag:带宽",
+   "type": "concept",
+   "label": "带宽"
+  },
+  {
+   "id": "tag:同步",
+   "type": "concept",
+   "label": "同步"
+  },
+  {
+   "id": "topics/gpu-architecture/mbarrier.md",
+   "type": "note",
+   "label": "mbarrier",
+   "topic": "gpu-architecture"
+  },
+  {
+   "id": "tag:异步同步",
+   "type": "concept",
+   "label": "异步同步"
+  },
+  {
+   "id": "topics/gpu-architecture/memory-access-paths.md",
+   "type": "note",
+   "label": "GPU 访存路径（六类）",
+   "topic": "gpu-architecture"
+  },
+  {
+   "id": "tag:访存路径",
+   "type": "concept",
+   "label": "访存路径"
+  },
+  {
+   "id": "tag:LD/ST",
+   "type": "concept",
+   "label": "LD/ST"
+  },
+  {
+   "id": "tag:CUDA graph",
+   "type": "concept",
+   "label": "CUDA graph"
+  },
+  {
+   "id": "tag:NVLink",
+   "type": "concept",
+   "label": "NVLink"
+  },
+  {
+   "id": "tag:Compute Sanitizer",
+   "type": "concept",
+   "label": "Compute Sanitizer"
+  },
+  {
+   "id": "tag:CUPTI",
+   "type": "concept",
+   "label": "CUPTI"
+  },
+  {
+   "id": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "type": "note",
+   "label": "tcgen05 stream ops",
+   "topic": "gpu-architecture"
+  },
+  {
+   "id": "tag:Tensor Core",
+   "type": "concept",
+   "label": "Tensor Core"
   },
   {
    "id": "topics/gpu-memory/vmm-expandable-segments.md",
@@ -78,6 +296,47 @@
    "label": "PyTorch allocator"
   },
   {
+   "id": "topics/pipeline-parallel/autograd-engine.md",
+   "type": "note",
+   "label": "Autograd 引擎：GraphTask、InputBuffer 与 prehook",
+   "topic": "pipeline-parallel"
+  },
+  {
+   "id": "tag:autograd",
+   "type": "concept",
+   "label": "autograd"
+  },
+  {
+   "id": "tag:GraphTask",
+   "type": "concept",
+   "label": "GraphTask"
+  },
+  {
+   "id": "tag:InputBuffer",
+   "type": "concept",
+   "label": "InputBuffer"
+  },
+  {
+   "id": "tag:prehook",
+   "type": "concept",
+   "label": "prehook"
+  },
+  {
+   "id": "tag:param_groups",
+   "type": "concept",
+   "label": "param_groups"
+  },
+  {
+   "id": "tag:AccumulateGrad",
+   "type": "concept",
+   "label": "AccumulateGrad"
+  },
+  {
+   "id": "tag:CompiledFunctionBackward",
+   "type": "concept",
+   "label": "CompiledFunctionBackward"
+  },
+  {
    "id": "topics/pipeline-parallel/zero-bubble-backward-split.md",
    "type": "note",
    "label": "Zero-bubble 的 backward 拆分（dI / dW）",
@@ -94,11 +353,6 @@
    "label": "zero-bubble"
   },
   {
-   "id": "tag:autograd",
-   "type": "concept",
-   "label": "autograd"
-  },
-  {
    "id": "tag:dI-dW",
    "type": "concept",
    "label": "dI-dW"
@@ -110,6 +364,408 @@
   }
  ],
  "edges": [
+  {
+   "source": "topic:attention-kernels",
+   "target": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "tag:FlashAttention",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "tag:pipeline",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "tag:blocker",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "tag:softmax",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "tag:TMA",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "tag:TMEM",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "tag:FA2",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "tag:FA3",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "tag:FA4",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "target": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topic:attention-kernels",
+   "target": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "tag:FlashAttention",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "tag:TLX",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "tag:AMD",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "tag:MI350X",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "tag:gfx950",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "tag:LDS",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "tag:MFMA",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "tag:wave",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "tag:tiling",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "topics/attention-kernels/fa-pipeline-blockers.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-amd-mi350x.md",
+   "target": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topic:attention-kernels",
+   "target": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "tag:FlashAttention",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "tag:FA4",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "tag:Blackwell",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "tag:tcgen05",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "tag:TMEM",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "tag:warp-specialization",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "tag:mbarrier",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "tag:tiling",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-blackwell-fa4.md",
+   "target": "topics/gpu-architecture/mbarrier.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topic:attention-kernels",
+   "target": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "target": "tag:FlashAttention",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "target": "tag:FA2",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "target": "tag:Hopper",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "target": "tag:mma.sync",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "target": "tag:cp.async",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "target": "tag:SMEM",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "target": "tag:tiling",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa2.md",
+   "target": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topic:attention-kernels",
+   "target": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "target": "tag:FlashAttention",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "target": "tag:FA3",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "target": "tag:Hopper",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "target": "tag:WGMMA",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "target": "tag:warpgroup",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "target": "tag:TMA",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "target": "tag:pipeline",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/attention-kernels/tiling-hopper-fa3.md",
+   "target": "tag:tiling",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topic:gpu-architecture",
+   "target": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "tag:LDS",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "tag:SMEM",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "tag:TMEM",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "tag:MFMA",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "tag:wgmma",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "tag:tcgen05",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "tag:带宽",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "tag:同步",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/amd-hopper-blackwell-datapath.md",
+   "target": "topics/gpu-architecture/memory-access-paths.md",
+   "kind": "related",
+   "label": ""
+  },
   {
    "source": "topic:gpu-architecture",
    "target": "topics/gpu-architecture/mbarrier.md",
@@ -147,6 +803,114 @@
    "label": ""
   },
   {
+   "source": "topic:gpu-architecture",
+   "target": "topics/gpu-architecture/memory-access-paths.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/memory-access-paths.md",
+   "target": "tag:访存路径",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/memory-access-paths.md",
+   "target": "tag:LD/ST",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/memory-access-paths.md",
+   "target": "tag:cp.async",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/memory-access-paths.md",
+   "target": "tag:TMA",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/memory-access-paths.md",
+   "target": "tag:CUDA graph",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/memory-access-paths.md",
+   "target": "tag:NVLink",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/memory-access-paths.md",
+   "target": "tag:Compute Sanitizer",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/memory-access-paths.md",
+   "target": "tag:CUPTI",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/memory-access-paths.md",
+   "target": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topic:gpu-architecture",
+   "target": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "target": "tag:tcgen05",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "target": "tag:TMEM",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "target": "tag:Tensor Core",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "target": "tag:Blackwell",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "target": "tag:mbarrier",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "target": "tag:SMEM",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-architecture/tcgen05-stream-ops.md",
+   "target": "topics/gpu-architecture/mbarrier.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
    "source": "topic:gpu-memory",
    "target": "topics/gpu-memory/vmm-expandable-segments.md",
    "kind": "contains",
@@ -180,6 +944,60 @@
    "source": "topics/gpu-memory/vmm-expandable-segments.md",
    "target": "tag:PyTorch allocator",
    "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topic:pipeline-parallel",
+   "target": "topics/pipeline-parallel/autograd-engine.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/autograd-engine.md",
+   "target": "tag:autograd",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/autograd-engine.md",
+   "target": "tag:GraphTask",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/autograd-engine.md",
+   "target": "tag:InputBuffer",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/autograd-engine.md",
+   "target": "tag:prehook",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/autograd-engine.md",
+   "target": "tag:param_groups",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/autograd-engine.md",
+   "target": "tag:AccumulateGrad",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/autograd-engine.md",
+   "target": "tag:CompiledFunctionBackward",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/autograd-engine.md",
+   "target": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "kind": "related",
    "label": ""
   },
   {
