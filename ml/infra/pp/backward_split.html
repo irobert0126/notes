@@ -34,9 +34,6 @@
     .note ul, .note ol { padding-left: 1.4em; }
     .note li { margin: 0.3em 0; }
     .note code { font-family: Menlo, Consolas, monospace; font-size: 0.9em; }
-    .note table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
-    .note th, .note td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: top; }
-    .note th { background: var(--bg); }
 
     dialog { inset: 0; width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #111; }
     .viewer { width: 100%; height: 100%; overflow: auto; }
@@ -66,7 +63,7 @@
       <button type="button" id="print-btn">打印</button>
     </div>
     <h1>PP backward 拆分 dI / dW：四种情况</h1>
-    <p class="lead">pipeline parallel（zero-bubble）里把一个 microbatch 的 backward 拆成 dI / dW；旧实现为什么只能在 eager 下工作，以及 SplitBackwardBackend 怎么修好它（点击图片放大）</p>
+    <p class="lead">点击图片放大</p>
     <div class="content">
       <button type="button" class="thumb" id="open-btn" aria-label="放大查看图片">
         <img src="images/backward_four_cases.png" alt="PP backward 拆分四种情况对比图">
@@ -75,67 +72,13 @@
     <p class="ctx"><a href="backward_split_context.md">上下文（Markdown）→</a></p>
 
     <section class="note">
-      <h2>结论</h2>
-      <ul>
-        <li>拆成 I（dgrad，算 dx，要尽快发给上一个 stage）和 W（wgrad，算 dW，可以往后挪去填 pipeline bubble）。</li>
-        <li>旧实现靠 InputBuffer 截取 dh，再用 param_groups 把 dh 留到 W。这只在 eager 下成立：eager 每个 aten op 一个 autograd 节点，dh 恰好走在两个节点之间的边上。</li>
-        <li>compile 后整个 dense half 是一个 <code>CompiledFunctionBackward</code> 节点，dh 变成编译图内部的 buffer，不进任何 InputBuffer。prehook 只截到 dy，W 只能整张图重算。</li>
-        <li>修复：SplitBackwardBackend 把 dI 图里的 dh 作为输出交出，存进节点的 ctx；W 只跑 dW 图，从 ctx 取数。</li>
-      </ul>
+      <h2>一句话目的</h2>
+      <p>这张图解释 PP 的 split dI / dW 是怎么做的。</p>
 
-      <h2>四种情况</h2>
-      <table>
-        <tr><th>情况</th><th>autograd 节点</th><th>dh 在哪里</th><th>GEMM（I + W）</th><th>延迟（GB200，实测）</th></tr>
-        <tr><td>eager，不拆</td><td>每个 op 一个节点</td><td>fc1 的 InputBuffer 里，用完即释放</td><td>4</td><td>—</td></tr>
-        <tr><td>eager，拆 I / W</td><td>每个 op 一个节点</td><td>prehook 存进 param_groups，W 作为根梯度喂回</td><td>4</td><td>37.66 ms</td></tr>
-        <tr><td>compile，没有 fix</td><td>整个 dense half 一个 <code>CompiledFunctionBackward</code></td><td>编译图内部 buffer，调用结束即 del，W 只能重算</td><td>8（只有 4 个有用）</td><td>73.60 ms</td></tr>
-        <tr><td>compile，有 fix</td><td><code>_SplitBackwardFunctionBackward</code></td><td>dI 图交出，存进 ctx，W 只跑 dW 图</td><td>4</td><td>37.00 ms</td></tr>
-      </table>
-      <p>测试条件：两层无 bias 的 Linear（fc1 → fc2），batch 16384（2 × 8192），dim 4096，fp32。前向 2 个 GEMM，反向 4 个 GEMM。真实模型的 dense half 更大，机制相同。来源：P2548053087。</p>
-
-      <h2>旧实现为什么只在 eager 下工作</h2>
-      <p>拆分后，一个 microbatch 的 backward 变成两次 autograd 调用，即两个顺序执行的 GraphTask（#1 是 I，#2 是 W），中间隔着其他 microbatch 的 F / I。dh 两边都要用：I 算 <code>dx = dh @ W1</code>，W 算 <code>dW1 = dhᵀ @ x</code>。</p>
-      <ul>
-        <li>#1 中，fc1 执行前 prehook 把 dh 的引用存进 param_groups；fc1 的 InputBuffer 随后释放。</li>
-        <li>#2 把 param_groups 里的 dh 作为根梯度（GradientEdge）喂进一个新建的 InputBuffer，fc1 只执行 wgrad。</li>
-      </ul>
-      <p>关键前提是 dh 走在两个 autograd 节点之间的边上。eager 下这个前提成立。compile 把节点合并后，前提不成立：prehook 截不到 dh，只能截到 dy，于是 W 只能整张图重算，即 8 个 GEMM 里只有 4 个有用。</p>
-
-      <h2>修复：SplitBackwardBackend</h2>
-      <ul>
-        <li>导出 joint graph，用 min-cut 切出 forward 和 backward，再把 backward 切成 dI 图和 dW 图，分别编译。</li>
-        <li>两张图挂在一个 <code>_SplitBackwardFunctionBackward</code> 节点上。节点用 <code>torch._C._will_engine_execute_node</code> 问 engine 每个输入要不要：#1 只跑 dI 图，#2 只跑 dW 图。</li>
-        <li>dI 图把 dh、dy、h、x 等 live-ins 作为输出，detach 后存进 <code>ctx.weight_live_ins</code>，活到 W。</li>
-        <li>叶子输入先包一层 <code>view_as</code>（<code>_engine_visible</code>），因为 engine 不会回答被 <code>autograd.grad</code> 截取的叶子。</li>
-        <li>不编译也能用：<code>SplitBackwardBackend(eager_compiler)</code> 只 trace、按 aten op 逐个执行，用 ctx 交接，37.64 ms，和 eager 一样。</li>
-      </ul>
-
-      <h2>为什么要拆 I / W</h2>
-      <p>dx 在 pipeline 的关键路径上，要尽快发给上一个 stage；wgrad 没有人等着用。拆开后，每一跳的代价从 I + W 变成 I，W 往后挪去填 bubble。Maglev Rail 的 <code>_dense_zero_bubble</code> 用 ZB1P 规则，W 落后 I 的步数等于 stage index。不拆的 Maglev1F1B 用 <code>stage.backward_micro</code>，Rail 用 <code>dense_backward_act_micro</code>（I）和 <code>dense_backward_weight_micro</code>（W）。</p>
-
-      <h2>术语</h2>
-      <ul>
-        <li><b>I / W（dI / dW）</b>：backward 的两半。I 算对输入的梯度（dgrad），W 算对权重的梯度（wgrad）。</li>
-        <li><b>dh</b>：fc2 对输入 h 的梯度，<code>dh = dy @ W2</code>。I 的 dgrad1 和 W 的 wgrad1 都要用它。</li>
-        <li><b>GraphTask</b>：engine 为每次 <code>autograd.grad</code> / <code>backward</code> 调用建的执行上下文，里面有 InputBuffer。</li>
-        <li><b>InputBuffer / slot</b>：节点还没执行时收梯度的槽。slot 号是边上的 input_nr，同一 slot 的多个梯度相加。</li>
-        <li><b>prehook</b>：节点执行前的回调，用来截取 InputBuffer 里的梯度。</li>
-        <li><b>param_groups</b>：<code>stage_backward_input</code> 返回的分组，记下权重、交汇节点和 prehook 截到的梯度引用。</li>
-        <li><b>CompiledFunctionBackward</b>：AOTAutograd 把整个编译后的 backward 包成的单个 autograd 节点。</li>
-        <li><b>ctx.weight_live_ins</b>：SplitBackwardBackend 存在节点 ctx 上、交给 W 的值。</li>
-      </ul>
-
-      <h2>相关</h2>
-      <ul>
-        <li>LLM 侧：torchtitan GraphPP 的 <code>split_di_dw_graph</code> 在 FX 图上切出 bw_di / bw_dw，和 SplitBackwardBackend 思路一致。</li>
-        <li>相关 diff：D117438870（Rail zero-bubble dense backward）、D124884069（SplitBackwardBackend）、D124884070（单测）、D125041326（msco maglev_pp 接入）。</li>
-      </ul>
-
-      <h2>未解决</h2>
-      <ul>
-        <li>Linear 反向里的 <code>TBackward0</code> 没有读 ATen 源码确认。</li>
-        <li>eager 拆那张图没画 W2 那组的 #2 GraphTask，只在 param_groups 里注明。</li>
-      </ul>
+      <h2>核心知识点（用户原意，已润色）</h2>
+      <p>之前的实现只能在 eager 模式下工作。原因是：拆分 I / W 的结果，是一个 microbatch 的 backward 变成两个 GraphTask（#1 I、#2 W，顺序执行），而这两个 GraphTask 都需要中间梯度 dh。之前的实现借 engine 的 InputBuffer 拿到 dh：dh 进入 fc1 的 InputBuffer 时被 prehook 截下，引用存进 param_groups，W 再把它喂回一个新的 InputBuffer。</p>
+      <p>compile 模式下，按 op 划分的多个 autograd 节点（fc1、fc2 的 <code>MmBackward0</code> 和 <code>TBackward0</code>）被合成一个 <code>CompiledFunctionBackward</code> 节点，dh 不再是节点之间的中间变量，也就不会存进 InputBuffer。prehook 截不到 dh，W 只能触发重算。</p>
+      <p>解法是让拆出来的 dI 图把 dh 作为输出交出来，存进节点的 ctx，由 ctx 把 dh 传给 W。</p>
     </section>
   </main>
   <dialog id="viewer">
