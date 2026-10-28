@@ -36,6 +36,6 @@
 
 ## 当前状态
 
-- 笔记 13 篇：gpu-architecture 4 篇，attention-kernels 5 篇，pipeline-parallel 2 篇，gpu-memory 2 篇。另有 1 篇 checkpoint。
-- 图谱默认只显示被多篇笔记共享的概念（约 18 个）。
+- 笔记 12 篇：gpu-architecture 4 篇，attention-kernels 5 篇，pipeline-parallel 2 篇，gpu-memory 1 篇（VMM 与 expandable_segments，含 VMS 小节）。另有 1 篇 checkpoint。
+- 图谱默认只显示被多篇笔记共享的概念。
 - 已知限制：图谱标签去重是近似计算；页面交互只在无头 Chrome 里验证过基本渲染和点击。
