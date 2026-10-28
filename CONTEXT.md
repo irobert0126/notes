@@ -18,7 +18,7 @@
 1. 原始材料只增不改。一个 paste 的嵌套 paste（历史版本、引用的实测数据）也要保存到 `sources/`。
 2. 笔记正文只放两部分：一句话目的，和核心知识点（用户原话，已润色）。其余内容留在 `sources/`，笔记里链接。
 3. front-matter 必须有 `title`、`topic`、`tags`、`related`、`sources`。`related` 和 `sources` 指向的文件必须存在。
-4. 图片放 `images/`。中文图为主，英文图用 `_en` 后缀，页面默认显示中文。
+4. 图片放 `images/`。双语图命名为 `<name>-bilingual.png`，左中文右 English，阅读页会自动加“中文 / 双语 / English”切换。单语图保留 `-zh` / `-en` 后缀。
 5. 图谱只读 `graph.json`。想加标签、标题或额外边，写在 `graph_overlay.json`。
 6. 旧地址不做兼容跳转，已经删除。
 7. 不确定的内容标为未验证，不要补充来源里没有的结论。
