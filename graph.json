@@ -296,6 +296,32 @@
    "label": "PyTorch allocator"
   },
   {
+   "id": "topics/gpu-memory/vms-fragment-repair.md",
+   "type": "note",
+   "label": "VMS 修复 fragment",
+   "topic": "gpu-memory"
+  },
+  {
+   "id": "tag:VMS",
+   "type": "concept",
+   "label": "VMS"
+  },
+  {
+   "id": "tag:fragment",
+   "type": "concept",
+   "label": "fragment"
+  },
+  {
+   "id": "tag:GMLake",
+   "type": "concept",
+   "label": "GMLake"
+  },
+  {
+   "id": "tag:空洞",
+   "type": "concept",
+   "label": "空洞"
+  },
+  {
    "id": "topics/pipeline-parallel/autograd-engine.md",
    "type": "note",
    "label": "Autograd 引擎：GraphTask、InputBuffer 与 prehook",
@@ -944,6 +970,54 @@
    "source": "topics/gpu-memory/vmm-expandable-segments.md",
    "target": "tag:PyTorch allocator",
    "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topic:gpu-memory",
+   "target": "topics/gpu-memory/vms-fragment-repair.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vms-fragment-repair.md",
+   "target": "tag:VMS",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vms-fragment-repair.md",
+   "target": "tag:VMM",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vms-fragment-repair.md",
+   "target": "tag:fragment",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vms-fragment-repair.md",
+   "target": "tag:expandable_segments",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vms-fragment-repair.md",
+   "target": "tag:GMLake",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vms-fragment-repair.md",
+   "target": "tag:空洞",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vms-fragment-repair.md",
+   "target": "topics/gpu-memory/vmm-expandable-segments.md",
+   "kind": "related",
    "label": ""
   },
   {

@@ -219,6 +219,24 @@
       "sources/vmm-expandable-segments-v2.md",
       "sources/vmm-expandable-segments-v1.md"
      ]
+    },
+    {
+     "path": "topics/gpu-memory/vms-fragment-repair.md",
+     "title": "VMS 修复 fragment",
+     "tags": [
+      "VMS",
+      "VMM",
+      "fragment",
+      "expandable_segments",
+      "GMLake",
+      "空洞"
+     ],
+     "related": [
+      "topics/gpu-memory/vmm-expandable-segments.md"
+     ],
+     "sources": [
+      "sources/vms-fragment-repair.md"
+     ]
     }
    ]
   },
