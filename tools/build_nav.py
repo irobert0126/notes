@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Regenerate nav.json and the shell index.html for every folder in the notes tree."""
+"""Regenerate nav.json, search.json and the shell index.html for every folder in the notes tree."""
 import json
 import re
+from html import unescape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SKIP_DIRS = {"tools", "images", "__pycache__"}
-SKIP_FILES = {"index.html", "README.md"}
+SKIP_FILES = {"index.html", "README.md", "md.html"}
+SEARCH = []
 
 SHELL = """<!DOCTYPE html>
 <html lang="zh">
@@ -19,6 +21,7 @@ SHELL = """<!DOCTYPE html>
 <body class="shell" data-root="{root}" data-current="{cur}">
   <aside id="tree">
     <div class="brand"><a href="{root}index.html">notes</a></div>
+    <input id="search" type="search" placeholder="搜索标题或内容" autocomplete="off">
     <div id="nav"></div>
   </aside>
   <section id="pane">
@@ -40,8 +43,16 @@ def html_title(path):
     return re.sub(r"<[^>]+>", "", m.group(1)).strip() if m else path.stem
 
 
+def html_text(path):
+    text = path.read_text(encoding="utf-8")
+    text = re.sub(r"<(script|style)\b.*?</\1>", " ", text, flags=re.S | re.I)
+    text = re.sub(r"<[^>]+>", " ", text)
+    return re.sub(r"\s+", " ", unescape(text)).strip()
+
+
 def build(folder):
     children = []
+    md = []
     for p in sorted(folder.iterdir()):
         if p.name.startswith("."):
             continue
@@ -49,21 +60,22 @@ def build(folder):
             if p.name in SKIP_DIRS:
                 continue
             sub = build(p)
-            if sub["children"]:
+            if sub["children"] or sub["md"]:
                 children.append(sub)
         elif p.name in SKIP_FILES:
             continue
         elif p.suffix == ".html":
-            children.append({"type": "page", "path": rel(p), "title": html_title(p)})
+            title = html_title(p)
+            children.append({"type": "page", "path": rel(p), "title": title})
+            SEARCH.append({"path": rel(p), "title": title, "text": html_text(p)})
         elif p.suffix == ".md":
-            children.append({"type": "md", "path": rel(p), "title": p.name})
+            md.append({"type": "md", "path": rel(p), "title": p.name})
+            SEARCH.append({"path": rel(p), "title": p.name, "text": p.read_text(encoding="utf-8")})
     children.sort(key=lambda c: (c["type"] != "dir", c["title"]))
-    return {
-        "type": "dir",
-        "path": rel(folder),
-        "title": "notes" if folder == ROOT else folder.name,
-        "children": children,
-    }
+    md.sort(key=lambda c: c["title"])
+    title = "notes" if folder == ROOT else folder.name
+    SEARCH.append({"path": rel(folder), "title": title, "text": ""})
+    return {"type": "dir", "path": rel(folder), "title": title, "children": children, "md": md}
 
 
 def write_shells(node):
@@ -81,6 +93,7 @@ def write_shells(node):
 def main():
     tree = build(ROOT)
     (ROOT / "nav.json").write_text(json.dumps(tree, ensure_ascii=False, indent=1), encoding="utf-8")
+    (ROOT / "search.json").write_text(json.dumps(SEARCH, ensure_ascii=False), encoding="utf-8")
     write_shells(tree)
 
 

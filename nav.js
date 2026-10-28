@@ -9,27 +9,50 @@
   }
 
   const navEl = document.getElementById('nav');
+  const searchEl = document.getElementById('search');
   const frame = document.getElementById('frame');
   const listing = document.getElementById('listing');
   const byPath = new Map();
   const rootPath = decodeURIComponent(new URL(root || './', location.href).pathname);
+  let searchIndex = null;
+  let searchTimer = null;
 
   function register(node) {
     byPath.set(node.path, node);
     (node.children || []).forEach(register);
+    (node.md || []).forEach(register);
+  }
+
+  function span(cls, text) {
+    const s = document.createElement('span');
+    s.className = cls;
+    s.textContent = text;
+    return s;
   }
 
   function makeLink(node) {
     const a = document.createElement('a');
     a.dataset.path = node.path;
-    if (node.type === 'md') {
-      a.href = root + node.path;
-      a.target = '_blank';
-      a.rel = 'noopener';
-    } else {
-      a.href = '#' + node.path;
-    }
+    a.href = '#' + node.path;
     return a;
+  }
+
+  function mdGroup(node) {
+    if (!node.md.length) return null;
+    const group = document.createElement('details');
+    group.className = 'md-group';
+    const summary = document.createElement('summary');
+    summary.textContent = 'Markdown';
+    const ul = document.createElement('ul');
+    node.md.forEach((m) => {
+      const li = document.createElement('li');
+      const a = makeLink(m);
+      a.textContent = m.title;
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    group.append(summary, ul);
+    return group;
   }
 
   function buildNode(node) {
@@ -54,6 +77,8 @@
     const ul = document.createElement('ul');
     node.children.forEach((c) => ul.appendChild(buildNode(c)));
     details.appendChild(ul);
+    const group = mdGroup(node);
+    if (group) details.appendChild(group);
     li.appendChild(details);
     return li;
   }
@@ -65,11 +90,23 @@
   }
 
   function expandTo(path) {
-    const parts = path ? path.split('/') : [];
-    for (let i = 1; i <= parts.length; i++) {
-      const details = navEl.querySelector(`details[data-path="${parts.slice(0, i).join('/')}"]`);
-      if (details) details.open = true;
+    const a = navEl.querySelector(`a[data-path="${path}"]`);
+    let d = a ? a.closest('details') : null;
+    while (d) {
+      d.open = true;
+      d = d.parentElement.closest('details');
     }
+  }
+
+  function card(c) {
+    const item = document.createElement('li');
+    const a = makeLink(c);
+    const hint = c.type === 'dir'
+      ? `${c.children.length + c.md.length} 项 →`
+      : c.type === 'md' ? 'Markdown' : '页面 →';
+    a.append(span('name', c.title), span('hint', hint));
+    item.appendChild(a);
+    return item;
   }
 
   function renderListing(node) {
@@ -77,29 +114,13 @@
     heading.textContent = node.title;
     const grid = document.createElement('ul');
     grid.className = 'grid';
-    node.children.forEach((c) => {
-      const item = document.createElement('li');
-      const a = makeLink(c);
-      const name = document.createElement('span');
-      name.className = 'name';
-      name.textContent = c.title;
-      const hint = document.createElement('span');
-      hint.className = 'hint';
-      hint.textContent = c.type === 'dir' ? `${c.children.length} 项 →` : c.type === 'md' ? 'Markdown ↗' : '页面 →';
-      a.append(name, hint);
-      item.appendChild(a);
-      grid.appendChild(item);
-    });
+    [...node.children, ...node.md].forEach((c) => grid.appendChild(card(c)));
     listing.replaceChildren(heading, grid);
   }
 
   function select(path) {
     const node = byPath.get(path) || byPath.get(current);
     if (!node) return;
-    if (node.type === 'md') {
-      window.open(root + node.path, '_blank');
-      return;
-    }
     markSelected(node.path);
     expandTo(node.path);
     document.title = node.title + ' · notes';
@@ -113,7 +134,9 @@
     frame.hidden = false;
     if (frame.dataset.path !== node.path) {
       frame.dataset.path = node.path;
-      frame.src = root + node.path;
+      frame.src = node.type === 'md'
+        ? root + 'md.html?f=' + encodeURIComponent(node.path)
+        : root + node.path;
     }
   }
 
@@ -146,6 +169,88 @@
 
   window.addEventListener('hashchange', () => select(fromHash() || current));
 
+  function loadSearchIndex() {
+    if (!searchIndex) {
+      searchIndex = fetch(root + 'search.json').then((r) => r.json());
+    }
+    return searchIndex;
+  }
+
+  function countOf(haystack, term) {
+    return haystack.split(term).length - 1;
+  }
+
+  function snippetAt(text, idx, len) {
+    const start = Math.max(0, idx - 40);
+    const end = Math.min(text.length, idx + len + 100);
+    return (start > 0 ? '…' : '') + text.slice(start, end).replace(/\s+/g, ' ') + (end < text.length ? '…' : '');
+  }
+
+  function renderResults(query, hits) {
+    const heading = document.createElement('h1');
+    heading.textContent = '搜索：' + query;
+    const count = document.createElement('p');
+    count.className = 'lead';
+    count.textContent = hits.length ? `${hits.length} 条结果` : '没有匹配的结果';
+    const ul = document.createElement('ul');
+    ul.className = 'results';
+    hits.forEach((h) => {
+      const li = document.createElement('li');
+      const a = makeLink(h.doc);
+      a.append(span('name', h.doc.title), span('path', h.doc.path));
+      if (h.snip) a.append(span('snip', h.snip));
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    listing.replaceChildren(heading, count, ul);
+    frame.hidden = true;
+    listing.hidden = false;
+  }
+
+  function runSearch(raw) {
+    const query = raw.trim();
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!terms.length) {
+      select(fromHash() || current);
+      return;
+    }
+    loadSearchIndex()
+      .then((docs) => {
+        if (searchEl.value.trim() !== query) return;
+        const hits = [];
+        docs.forEach((doc) => {
+          const title = doc.title.toLowerCase();
+          const text = doc.text.toLowerCase();
+          const path = doc.path.toLowerCase();
+          if (!terms.every((t) => title.includes(t) || path.includes(t) || text.includes(t))) return;
+          const score = terms.reduce((s, t) => s + (title.includes(t) ? 20 : 0) + Math.min(countOf(text, t), 50), 0);
+          let snip = '';
+          const idx = terms.map((t) => text.indexOf(t)).find((i) => i >= 0);
+          if (idx !== undefined) snip = snippetAt(doc.text, idx, 0);
+          hits.push({ doc, score, snip });
+        });
+        hits.sort((a, b) => b.score - a.score);
+        renderResults(query, hits.slice(0, 50));
+      })
+      .catch(() => {
+        listing.hidden = false;
+        frame.hidden = true;
+        listing.textContent = '搜索需要通过 http 服务打开本目录。';
+      });
+  }
+
+  searchEl.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => runSearch(searchEl.value), 150);
+  });
+
+  searchEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      searchEl.value = '';
+      runSearch('');
+    }
+  });
+
   fetch(root + 'nav.json')
     .then((r) => r.json())
     .then((tree) => {
@@ -153,6 +258,8 @@
       const ul = document.createElement('ul');
       tree.children.forEach((c) => ul.appendChild(buildNode(c)));
       navEl.appendChild(ul);
+      const group = mdGroup(tree);
+      if (group) navEl.appendChild(group);
       select(fromHash() || current);
     })
     .catch(() => {

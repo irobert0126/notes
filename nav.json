@@ -7,7 +7,8 @@
    "type": "dir",
    "path": "checkpoints",
    "title": "checkpoints",
-   "children": [
+   "children": [],
+   "md": [
     {
      "type": "md",
      "path": "checkpoints/2026-10-15-example.md",
@@ -46,6 +47,13 @@
          "title": "GPU 硬件结构与访存路径"
         },
         {
+         "type": "page",
+         "path": "ml/infra/hw_arch/blackwell.html",
+         "title": "tcgen05 stream ops"
+        }
+       ],
+       "md": [
+        {
          "type": "md",
          "path": "ml/infra/hw_arch/arch_context.md",
          "title": "arch_context.md"
@@ -54,11 +62,6 @@
          "type": "md",
          "path": "ml/infra/hw_arch/mbarrier_context.md",
          "title": "mbarrier_context.md"
-        },
-        {
-         "type": "page",
-         "path": "ml/infra/hw_arch/blackwell.html",
-         "title": "tcgen05 stream ops"
         }
        ]
       },
@@ -96,7 +99,9 @@
            "type": "page",
            "path": "ml/infra/kernel/fa/hopper_fa3.html",
            "title": "Hopper FA3 tiling"
-          },
+          }
+         ],
+         "md": [
           {
            "type": "md",
            "path": "ml/infra/kernel/fa/amd_tiling_context.md",
@@ -124,11 +129,15 @@
           }
          ]
         }
-       ]
+       ],
+       "md": []
       }
-     ]
+     ],
+     "md": []
     }
-   ]
+   ],
+   "md": []
   }
- ]
+ ],
+ "md": []
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: var(--card); }
+    .md-view { max-width: 860px; margin: 0 auto; padding: 32px 28px 72px; line-height: 1.75; font-size: 15px; overflow-wrap: anywhere; }
+    .md-view h1 { font-size: 26px; }
+    .md-view h2 { font-size: 20px; margin-top: 2em; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .md-view h3 { font-size: 17px; margin-top: 1.5em; }
+    .md-view pre { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; white-space: pre; }
+    .md-view code { font-family: Menlo, Consolas, monospace; font-size: 0.9em; }
+    .md-view table { border-collapse: collapse; }
+    .md-view th, .md-view td { border: 1px solid var(--border); padding: 4px 8px; }
+  </style>
+</head>
+<body>
+  <main class="md-view" id="out">加载中…</main>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    const file = new URLSearchParams(location.search).get('f') || '';
+    const out = document.getElementById('out');
+    document.title = file.split('/').pop() || 'Markdown';
+    fetch(file)
+      .then((r) => {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      })
+      .then((text) => {
+        if (window.marked) {
+          out.innerHTML = marked.parse(text);
+        } else {
+          out.textContent = text;
+        }
+      })
+      .catch(() => {
+        out.textContent = '无法加载：' + file;
+      });
+  </script>
+</body>
+</html>

@@ -164,6 +164,37 @@ img { max-width: 100%; border-radius: 8px; }
 }
 #listing h1 { margin-top: 0; }
 
+#search {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 12px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+#tree .md-group > summary { color: var(--muted); font-size: 12px; padding: 4px 8px; }
+
+.results { list-style: none; margin: 0; padding: 0; }
+.results li { margin-bottom: 10px; }
+.results a {
+  display: block;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+}
+.results a:hover { border-color: var(--accent); }
+.results .name { display: block; font-weight: 600; }
+.results .path { display: block; color: var(--muted); font-size: 12px; }
+.results .snip { display: block; margin-top: 6px; color: var(--text); font-size: 13px; line-height: 1.6; }
+
 @media (max-width: 720px) {
   .shell { display: block; height: auto; overflow: visible; }
   #tree { width: auto; flex: none; max-height: 40vh; border-right: 0; border-bottom: 1px solid var(--border); }
