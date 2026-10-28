@@ -5,19 +5,6 @@
  "children": [
   {
    "type": "dir",
-   "path": "checkpoints",
-   "title": "checkpoints",
-   "children": [],
-   "md": [
-    {
-     "type": "md",
-     "path": "checkpoints/2026-10-15-example.md",
-     "title": "2026-10-15-example.md"
-    }
-   ]
-  },
-  {
-   "type": "dir",
    "path": "ml",
    "title": "ml",
    "children": [
@@ -50,18 +37,6 @@
          "type": "page",
          "path": "ml/infra/hw_arch/blackwell.html",
          "title": "tcgen05 stream ops"
-        }
-       ],
-       "md": [
-        {
-         "type": "md",
-         "path": "ml/infra/hw_arch/arch_context.md",
-         "title": "arch_context.md"
-        },
-        {
-         "type": "md",
-         "path": "ml/infra/hw_arch/mbarrier_context.md",
-         "title": "mbarrier_context.md"
         }
        ]
       },
@@ -100,44 +75,13 @@
            "path": "ml/infra/kernel/fa/hopper_fa3.html",
            "title": "Hopper FA3 tiling"
           }
-         ],
-         "md": [
-          {
-           "type": "md",
-           "path": "ml/infra/kernel/fa/amd_tiling_context.md",
-           "title": "amd_tiling_context.md"
-          },
-          {
-           "type": "md",
-           "path": "ml/infra/kernel/fa/blackwell_fa4_tiling_context.md",
-           "title": "blackwell_fa4_tiling_context.md"
-          },
-          {
-           "type": "md",
-           "path": "ml/infra/kernel/fa/hopper_fa2_tiling_context.md",
-           "title": "hopper_fa2_tiling_context.md"
-          },
-          {
-           "type": "md",
-           "path": "ml/infra/kernel/fa/hopper_fa3_tiling_context.md",
-           "title": "hopper_fa3_tiling_context.md"
-          },
-          {
-           "type": "md",
-           "path": "ml/infra/kernel/fa/pipeline_context.md",
-           "title": "pipeline_context.md"
-          }
          ]
         }
-       ],
-       "md": []
+       ]
       }
-     ],
-     "md": []
+     ]
     }
-   ],
-   "md": []
+   ]
   }
- ],
- "md": []
+ ]
 }

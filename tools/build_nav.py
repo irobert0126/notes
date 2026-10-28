@@ -52,7 +52,6 @@ def html_text(path):
 
 def build(folder):
     children = []
-    md = []
     for p in sorted(folder.iterdir()):
         if p.name.startswith("."):
             continue
@@ -60,7 +59,7 @@ def build(folder):
             if p.name in SKIP_DIRS:
                 continue
             sub = build(p)
-            if sub["children"] or sub["md"]:
+            if sub["children"]:
                 children.append(sub)
         elif p.name in SKIP_FILES:
             continue
@@ -69,13 +68,11 @@ def build(folder):
             children.append({"type": "page", "path": rel(p), "title": title})
             SEARCH.append({"path": rel(p), "title": title, "text": html_text(p)})
         elif p.suffix == ".md":
-            md.append({"type": "md", "path": rel(p), "title": p.name})
             SEARCH.append({"path": rel(p), "title": p.name, "text": p.read_text(encoding="utf-8")})
     children.sort(key=lambda c: (c["type"] != "dir", c["title"]))
-    md.sort(key=lambda c: c["title"])
     title = "notes" if folder == ROOT else folder.name
     SEARCH.append({"path": rel(folder), "title": title, "text": ""})
-    return {"type": "dir", "path": rel(folder), "title": title, "children": children, "md": md}
+    return {"type": "dir", "path": rel(folder), "title": title, "children": children}
 
 
 def write_shells(node):

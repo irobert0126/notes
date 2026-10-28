@@ -20,7 +20,6 @@
   function register(node) {
     byPath.set(node.path, node);
     (node.children || []).forEach(register);
-    (node.md || []).forEach(register);
   }
 
   function span(cls, text) {
@@ -35,24 +34,6 @@
     a.dataset.path = node.path;
     a.href = '#' + node.path;
     return a;
-  }
-
-  function mdGroup(node) {
-    if (!node.md.length) return null;
-    const group = document.createElement('details');
-    group.className = 'md-group';
-    const summary = document.createElement('summary');
-    summary.textContent = 'Markdown';
-    const ul = document.createElement('ul');
-    node.md.forEach((m) => {
-      const li = document.createElement('li');
-      const a = makeLink(m);
-      a.textContent = m.title;
-      li.appendChild(a);
-      ul.appendChild(li);
-    });
-    group.append(summary, ul);
-    return group;
   }
 
   function buildNode(node) {
@@ -77,8 +58,6 @@
     const ul = document.createElement('ul');
     node.children.forEach((c) => ul.appendChild(buildNode(c)));
     details.appendChild(ul);
-    const group = mdGroup(node);
-    if (group) details.appendChild(group);
     li.appendChild(details);
     return li;
   }
@@ -102,8 +81,8 @@
     const item = document.createElement('li');
     const a = makeLink(c);
     const hint = c.type === 'dir'
-      ? `${c.children.length + c.md.length} 项 →`
-      : c.type === 'md' ? 'Markdown' : '页面 →';
+      ? `${c.children.length} 项 →`
+      : '页面 →';
     a.append(span('name', c.title), span('hint', hint));
     item.appendChild(a);
     return item;
@@ -114,12 +93,15 @@
     heading.textContent = node.title;
     const grid = document.createElement('ul');
     grid.className = 'grid';
-    [...node.children, ...node.md].forEach((c) => grid.appendChild(card(c)));
+    node.children.forEach((c) => grid.appendChild(card(c)));
     listing.replaceChildren(heading, grid);
   }
 
   function select(path) {
-    const node = byPath.get(path) || byPath.get(current);
+    const isMd = path.endsWith('.md') && !byPath.has(path);
+    const node = isMd
+      ? { type: 'md', path, title: path.split('/').pop() }
+      : byPath.get(path) || byPath.get(current);
     if (!node) return;
     markSelected(node.path);
     expandTo(node.path);
@@ -258,8 +240,6 @@
       const ul = document.createElement('ul');
       tree.children.forEach((c) => ul.appendChild(buildNode(c)));
       navEl.appendChild(ul);
-      const group = mdGroup(tree);
-      if (group) navEl.appendChild(group);
       select(fromHash() || current);
     })
     .catch(() => {

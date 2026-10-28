@@ -177,8 +177,6 @@ img { max-width: 100%; border-radius: 8px; }
   font-size: 14px;
 }
 
-#tree .md-group > summary { color: var(--muted); font-size: 12px; padding: 4px 8px; }
-
 .results { list-style: none; margin: 0; padding: 0; }
 .results li { margin-bottom: 10px; }
 .results a {
