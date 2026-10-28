@@ -78,6 +78,18 @@
          ]
         }
        ]
+      },
+      {
+       "type": "dir",
+       "path": "ml/infra/pp",
+       "title": "pp",
+       "children": [
+        {
+         "type": "page",
+         "path": "ml/infra/pp/backward_split.html",
+         "title": "PP backward 拆分 dI / dW：四种情况"
+        }
+       ]
       }
      ]
     }
