@@ -281,6 +281,21 @@
    "label": "VMS"
   },
   {
+   "id": "tag:empty_cache",
+   "type": "concept",
+   "label": "empty_cache"
+  },
+  {
+   "id": "tag:release_blocks",
+   "type": "concept",
+   "label": "release_blocks"
+  },
+  {
+   "id": "tag:cudaFree",
+   "type": "concept",
+   "label": "cudaFree"
+  },
+  {
    "id": "tag:cuMemMap",
    "type": "concept",
    "label": "cuMemMap"
@@ -950,6 +965,24 @@
   {
    "source": "topics/gpu-memory/vmm-expandable-segments.md",
    "target": "tag:VMS",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:empty_cache",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:release_blocks",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:cudaFree",
    "kind": "tag",
    "label": ""
   },
