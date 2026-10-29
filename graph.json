@@ -281,14 +281,24 @@
    "label": "VMS"
   },
   {
-   "id": "tag:expandable_segments",
-   "type": "concept",
-   "label": "expandable_segments"
-  },
-  {
    "id": "tag:cuMemMap",
    "type": "concept",
    "label": "cuMemMap"
+  },
+  {
+   "id": "tag:cuMemRelease",
+   "type": "concept",
+   "label": "cuMemRelease"
+  },
+  {
+   "id": "tag:cuMemUnmap",
+   "type": "concept",
+   "label": "cuMemUnmap"
+  },
+  {
+   "id": "tag:expandable_segments",
+   "type": "concept",
+   "label": "expandable_segments"
   },
   {
    "id": "tag:chunk",
@@ -945,13 +955,25 @@
   },
   {
    "source": "topics/gpu-memory/vmm-expandable-segments.md",
-   "target": "tag:expandable_segments",
+   "target": "tag:cuMemMap",
    "kind": "tag",
    "label": ""
   },
   {
    "source": "topics/gpu-memory/vmm-expandable-segments.md",
-   "target": "tag:cuMemMap",
+   "target": "tag:cuMemRelease",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:cuMemUnmap",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/gpu-memory/vmm-expandable-segments.md",
+   "target": "tag:expandable_segments",
    "kind": "tag",
    "label": ""
   },

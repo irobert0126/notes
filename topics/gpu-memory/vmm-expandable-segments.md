@@ -1,9 +1,9 @@
 ---
 title: VMM 与 expandable_segments
 topic: gpu-memory
-tags: [VMM, VMS, expandable_segments, cuMemMap, chunk, fragment, PyTorch allocator, GMLake]
+tags: [VMM, VMS, cuMemMap, cuMemRelease, cuMemUnmap, expandable_segments, cuMemMap, chunk, fragment, PyTorch allocator, GMLake]
 related: []
-sources: [sources/vmm-expandable-segments-v5.md, sources/vmm-expandable-segments-v4.md, sources/vmm-expandable-segments-v3.md, sources/vmm-expandable-segments-v2.md, sources/vmm-expandable-segments-v1.md, sources/vms-fragment-repair.md, sources/vma-compare-vms-page-recycle.md, sources/vma-compare-vms-doc-superseded.md]
+sources: [sources/driver-ops-impact.md, sources/vmm-expandable-segments-v5.md, sources/vmm-expandable-segments-v4.md, sources/vmm-expandable-segments-v3.md, sources/vmm-expandable-segments-v2.md, sources/vmm-expandable-segments-v1.md, sources/vms-fragment-repair.md, sources/vma-compare-vms-page-recycle.md, sources/vma-compare-vms-doc-superseded.md]
 ---
 
 # VMM 与 expandable_segments
@@ -51,6 +51,22 @@ fragment 的根源是"连续 VA 的要求"和"物理 chunk 不连续"之间的�
 
 ![VMS 与页回收对比（同一例子）](../../images/vma-vms-vs-page-recycle.png)
 
+## 七个 CUDA 驱动内存操作
+
+### 一句话目的
+
+逐个列出七个底层 CUDA 驱动调用对 HBM、VA 和段的影响，弄清哪些只动物理内存，哪些动 VA 映射。
+
+### 核心知识点（草稿，待确认）
+
+每种 CUDA 驱动调用对应一个确定的操作：cuMemCreate 分配一个 2 MB 物理句柄，HBM 占用增加，不涉及 VA；cuMemRelease 释放物理句柄，HBM 归还 driver，reserved 减少；cuMemAddressReserve 在 VA 上预留地址范围，不映射，不占 HBM；cuMemAddressFree 归还预留的 VA 范围；cuMemMap 把物理句柄映射到 VA 的某个位置；cuMemSetAccess 给映射设置读写权限；cuMemUnmap 删除映射，HBM 不释放。
+
+只有 cuMemRelease 会让 reserved 下降。PyTorch 的 expandable segments 也用这七个调用，但它的解除映射（unmapHandles）会先 cuMemUnmap 再 cuMemRelease，所以同时归还 HBM；GMLake 的 unmap 不归还 HBM，要等 PhyBlock 析构时才 cuMemRelease。
+
+![七个 CUDA 驱动内存操作对 HBM 与 VA 的影响](../../images/driver-ops-impact.png)
+
+未验证：状态变化是按代码路径手推的，没有运行；cuMemAddressFree 必须在解除映射之后调用，这一点只从两边代码的顺序看出来，CUDA 文档没有核对。
+
 ## 来源
 
 - [VMM 与 expandable_segments：v5（当前版本）](../../sources/vmm-expandable-segments-v5.md)
@@ -58,3 +74,4 @@ fragment 的根源是"连续 VA 的要求"和"物理 chunk 不连续"之间的�
 - [VMS 修复 fragment：2×2 示意图（完整 SVG）](../../sources/vms-fragment-repair.md)
 - [VMS 与页回收对比（完整 SVG）](../../sources/vma-compare-vms-page-recycle.md)
 - 被取代的旧版本（VMS 与 doc 搬页对比）：[vma-compare-vms-doc-superseded](../../sources/vma-compare-vms-doc-superseded.md)
+- [七个 CUDA 驱动内存操作（完整 SVG 与知识表）](../../sources/driver-ops-impact.md)

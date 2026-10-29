@@ -207,6 +207,9 @@
      "tags": [
       "VMM",
       "VMS",
+      "cuMemMap",
+      "cuMemRelease",
+      "cuMemUnmap",
       "expandable_segments",
       "cuMemMap",
       "chunk",
@@ -216,6 +219,7 @@
      ],
      "related": [],
      "sources": [
+      "sources/driver-ops-impact.md",
       "sources/vmm-expandable-segments-v5.md",
       "sources/vmm-expandable-segments-v4.md",
       "sources/vmm-expandable-segments-v3.md",
