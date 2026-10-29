@@ -207,10 +207,6 @@
      "tags": [
       "VMM",
       "VMS",
-      "empty_cache",
-      "emptyCache",
-      "release_blocks",
-      "cudaFree",
       "cuMemMap",
       "cuMemRelease",
       "cuMemUnmap",
@@ -223,7 +219,6 @@
      ],
      "related": [],
      "sources": [
-      "sources/emptycache-call-path.md",
       "sources/driver-ops-impact.md",
       "sources/vmm-expandable-segments-v5.md",
       "sources/vmm-expandable-segments-v4.md",
