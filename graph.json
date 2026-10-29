@@ -377,15 +377,56 @@
    "label": "CompiledFunctionBackward"
   },
   {
-   "id": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "id": "topics/pipeline-parallel/maglev-stage-hooks.md",
    "type": "note",
-   "label": "Zero-bubble 的 backward 拆分（dI / dW）",
+   "label": "Maglev StageWrapper 的 hook 连线（rank 2）",
    "topic": "pipeline-parallel"
+  },
+  {
+   "id": "tag:Maglev",
+   "type": "concept",
+   "label": "Maglev"
+  },
+  {
+   "id": "tag:StageWrapper",
+   "type": "concept",
+   "label": "StageWrapper"
+  },
+  {
+   "id": "tag:activation specs",
+   "type": "concept",
+   "label": "activation specs"
+  },
+  {
+   "id": "tag:P2P",
+   "type": "concept",
+   "label": "P2P"
   },
   {
    "id": "tag:pipeline-parallel",
    "type": "concept",
    "label": "pipeline-parallel"
+  },
+  {
+   "id": "tag:DMP",
+   "type": "concept",
+   "label": "DMP"
+  },
+  {
+   "id": "tag:wait_for_act",
+   "type": "concept",
+   "label": "wait_for_act"
+  },
+  {
+   "id": "tag:wait_for_grad",
+   "type": "concept",
+   "label": "wait_for_grad"
+  },
+  {
+   "id": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "type": "note",
+   "label": "Zero-bubble 的 backward 拆分（dI / dW）",
+   "topic": "pipeline-parallel"
   },
   {
    "id": "tag:zero-bubble",
@@ -1085,6 +1126,72 @@
   {
    "source": "topics/pipeline-parallel/autograd-engine.md",
    "target": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topic:pipeline-parallel",
+   "target": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "kind": "contains",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "tag:Maglev",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "tag:StageWrapper",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "tag:activation specs",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "tag:P2P",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "tag:pipeline-parallel",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "tag:DMP",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "tag:wait_for_act",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "tag:wait_for_grad",
+   "kind": "tag",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "topics/pipeline-parallel/zero-bubble-backward-split.md",
+   "kind": "related",
+   "label": ""
+  },
+  {
+   "source": "topics/pipeline-parallel/maglev-stage-hooks.md",
+   "target": "topics/pipeline-parallel/autograd-engine.md",
    "kind": "related",
    "label": ""
   },

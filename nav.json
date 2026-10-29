@@ -260,6 +260,27 @@
      ]
     },
     {
+     "path": "topics/pipeline-parallel/maglev-stage-hooks.md",
+     "title": "Maglev StageWrapper 的 hook 连线（rank 2）",
+     "tags": [
+      "Maglev",
+      "StageWrapper",
+      "activation specs",
+      "P2P",
+      "pipeline-parallel",
+      "DMP",
+      "wait_for_act",
+      "wait_for_grad"
+     ],
+     "related": [
+      "topics/pipeline-parallel/zero-bubble-backward-split.md",
+      "topics/pipeline-parallel/autograd-engine.md"
+     ],
+     "sources": [
+      "sources/maglev-stagewrapper-hooks.md"
+     ]
+    },
+    {
      "path": "topics/pipeline-parallel/zero-bubble-backward-split.md",
      "title": "Zero-bubble 的 backward 拆分（dI / dW）",
      "tags": [
