@@ -1,9 +1,9 @@
 ---
 title: VMM 与 expandable_segments
 topic: gpu-memory
-tags: [VMM, VMS, cuMemMap, cuMemRelease, cuMemUnmap, expandable_segments, cuMemMap, chunk, fragment, PyTorch allocator, GMLake]
+tags: [VMM, VMS, empty_cache, emptyCache, release_blocks, cudaFree, cuMemMap, cuMemRelease, cuMemUnmap, expandable_segments, cuMemMap, chunk, fragment, PyTorch allocator, GMLake]
 related: []
-sources: [sources/driver-ops-impact.md, sources/vmm-expandable-segments-v5.md, sources/vmm-expandable-segments-v4.md, sources/vmm-expandable-segments-v3.md, sources/vmm-expandable-segments-v2.md, sources/vmm-expandable-segments-v1.md, sources/vms-fragment-repair.md, sources/vma-compare-vms-page-recycle.md, sources/vma-compare-vms-doc-superseded.md]
+sources: [sources/emptycache-call-path.md, sources/driver-ops-impact.md, sources/vmm-expandable-segments-v5.md, sources/vmm-expandable-segments-v4.md, sources/vmm-expandable-segments-v3.md, sources/vmm-expandable-segments-v2.md, sources/vmm-expandable-segments-v1.md, sources/vms-fragment-repair.md, sources/vma-compare-vms-page-recycle.md, sources/vma-compare-vms-doc-superseded.md]
 ---
 
 # VMM 与 expandable_segments
@@ -67,6 +67,20 @@ fragment 的根源是"连续 VA 的要求"和"物理 chunk 不连续"之间的�
 
 未验证：状态变化是按代码路径手推的，没有运行；cuMemAddressFree 必须在解除映射之后调用，这一点只从两边代码的顺序看出来，CUDA 文档没有核对。
 
+## torch.cuda.empty_cache() 的释放路径
+
+### 一句话目的
+
+说清楚 `torch.cuda.empty_cache()` 在 PyTorch 原生分配器里走哪些函数、分两遍释放、每一步调哪些驱动调用，以及释放之后碎片还剩什么。
+
+### 核心知识点（草稿，待确认）
+
+emptyCache 只释放池里的空闲块。`release_blocks` 分两遍：第一遍整块普通块直接 `cudaFree`，expandable 块先收进 `to_unmap`；第二遍逐个 unmap、release，段空了再整段删除（`cuMemAddressFree`）。在用的块不在池里，不会被释放，所以释放之后段还在，碎片也还在。
+
+![torch.cuda.empty_cache() 的调用链与两遍释放](../../images/emptycache-call-path.png)
+
+未验证：例子的状态是手推的，没有运行；cudaFree 内部调用了哪些 cuMem\* 需要 trace 才能确定；small 池、graph pool 分支和 GMLake 的 GC 没有画。
+
 ## 来源
 
 - [VMM 与 expandable_segments：v5（当前版本）](../../sources/vmm-expandable-segments-v5.md)
@@ -75,3 +89,4 @@ fragment 的根源是"连续 VA 的要求"和"物理 chunk 不连续"之间的�
 - [VMS 与页回收对比（完整 SVG）](../../sources/vma-compare-vms-page-recycle.md)
 - 被取代的旧版本（VMS 与 doc 搬页对比）：[vma-compare-vms-doc-superseded](../../sources/vma-compare-vms-doc-superseded.md)
 - [七个 CUDA 驱动内存操作（完整 SVG 与知识表）](../../sources/driver-ops-impact.md)
+- [torch.cuda.empty_cache() 的调用链与两遍释放（完整 SVG 与知识表）](../../sources/emptycache-call-path.md)
